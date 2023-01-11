@@ -1,0 +1,183 @@
+---
+objects:
+  agency:
+    path: /agency
+    key: [agencyid]
+    methods:
+      - GET
+      - POST
+      - DELETE
+      - PUT
+    fields:
+      agencyid:
+        required: true
+        type: str
+      hi2address:
+        required: true
+        type: ip
+      hi3address:
+        required: true
+        type: ip
+      hi2port:
+        required: true
+        type: port
+      hi3port:
+        required: true
+        type: port
+      keepalivefreq:
+        type: int
+        default: 300
+        minimum: 0
+      keepalivewait:
+        type: int
+        default: 30
+        minimum: 0
+  ipintercept:
+    path: /ipintercept
+    key: [liid]
+    methods:
+      - GET
+      - POST
+      - DELETE
+      - PUT
+    fields:
+      liid:
+        required: true
+        type: str
+      authcc:
+        required: true
+        type: str
+      delivcc:
+        required: true
+        type: str
+      agencyid:
+        required: true
+        type: str
+        choices_source: agency
+      mediator:
+        required: true
+        type: int
+        minimum: 0
+      vendmirrorid:
+        type: int
+      user:
+        required: true
+        type: str
+      accesstype:
+        type: str
+      radiusident:
+        type: str
+      staticips:
+        type: list
+        elements:
+          type: dict
+          fields:
+            iprange:
+              required: true
+              type: ip_range
+            sessionid:
+              required: true
+              type: int
+              minimum: 0
+      starttime:
+        type: unix_timestamp
+      endtime:
+        type: unix_timestamp
+  voipintercept:
+    path: /voipintercept
+    key: [liid]
+    methods:
+      - GET
+      - POST
+      - DELETE
+      - PUT
+    fields:
+      liid:
+        required: true
+        type: str
+      authcc:
+        required: true
+        type: str
+      delivcc:
+        required: true
+        type: str
+      agencyid:
+        required: true
+        type: str
+        choices_source: agency
+      mediator:
+        required: true
+        type: int
+        minimum: 0
+      siptargets:
+        required: true
+        type: list
+        elements:
+          type: dict
+          fields:
+            username:
+              required: true
+              type: str
+            realm:
+              type: str
+      starttime:
+        type: unix_timestamp
+      endtime:
+        type: unix_timestamp
+  radiusserver:
+    path: /radiusserver
+    key: [ipaddress, port]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+      port:
+        required: true
+        type: port
+  sipserver:
+    path: /sipserver
+    key: [ipaddress, port]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+      port:
+        required: true
+        type: port
+  gtpserver:
+    path: /gtpserver
+    key: [ipaddress, port]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+      port:
+        required: true
+        type: port
+  defaultradius:
+    path: /defaultradius
+    key: [username]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      username:
+        required: true
+        type: text

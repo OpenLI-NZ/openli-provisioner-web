@@ -1,0 +1,22 @@
+[Unit]
+Description=OpenLI Provisioner Web Interface
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+User=openli-provisioner-web
+Group=openli-provisioner-web
+PIDFile=/var/tmp/openli-provisioner-web.pid
+WorkingDirectory=/usr/local/lib/openli-provisioner-web
+EnvironmentFile=/etc/openli-provisioner-web/service.env
+
+ExecStart=/usr/local/lib/openli-provisioner-web/venv/bin/gunicorn --pid /var/tmp/openli-provisioner-web.pid --config /etc/openli-provisioner-web/gunicorn.py --preload openli_provisioner_web:app
+
+Restart=on-failure
+RestartSec=30
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

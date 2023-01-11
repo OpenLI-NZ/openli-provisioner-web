@@ -1,0 +1,6 @@
+flask
+Flask-Session
+jsonschema
+pyyaml
+redis
+requests

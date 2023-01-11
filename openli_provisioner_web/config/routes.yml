@@ -1,0 +1,144 @@
+---
+title: Home
+
+navigation:
+  - agency
+  - intercept
+  - coreserver
+  - defaultradius
+
+routes:
+  agency:
+    title: Agencies
+    object:
+      name: agency
+      fields:
+        - name: agencyid
+          label: Agency
+        - name: hi2address
+          label: HI2 address
+        - name: hi2port
+          label: HI2 port
+        - name: hi3address
+          label: HI3 address
+        - name: hi3port
+          label: HI3 port
+        - name: keepalivefreq
+          label: Keep alive frequency (seconds)
+        - name: keepalivewait
+          label: Keep alive wait (seconds)
+  intercept:
+    title: Intercepts
+    navigation:
+      - ipintercept
+      - voipintercept
+    routes:
+      ipintercept:
+        title: IP Intercepts
+        object:
+          name: ipintercept
+          list_fields:
+            - liid
+            - user
+          fields:
+            - name: liid
+              label: LIID
+            - name: authcc
+              label: Authorisation country code
+            - name: delivcc
+              label: Delivery country code
+            - name: agencyid
+              label: Agency
+            - name: mediator
+              label: Mediator ID
+            - name: vendmirrorid
+              label: Vendor mirror
+            - name: user
+              label: User
+            - name: accesstype
+              label: Access type
+            - name: radiusident
+              label: RADIUS identity
+            - name: staticips
+              label: Static IP addresses
+              elements:
+                fields:
+                  - name: iprange
+                    label: IP range
+                  - name: sessionid
+                    label: Session ID
+            - name: starttime
+              label: Start time
+            - name: endtime
+              label: End time
+      voipintercept:
+        title: VoIP Intercepts
+        object:
+          name: voipintercept
+          list_fields:
+            - liid
+            - siptargets
+          fields:
+            - name: liid
+              label: LIID
+            - name: authcc
+              label: Authorisation country code
+            - name: delivcc
+              label: Delivery country code
+            - name: agencyid
+              label: Agency
+            - name: mediator
+              label: Mediator ID
+            - name: siptargets
+              label: SIP targets
+              elements:
+                fields:
+                  - name: username
+                    label: Username
+                  - name: realm
+                    label: Realm
+            - name: starttime
+              label: Start time
+            - name: endtime
+              label: End time
+  coreserver:
+    title: Core servers
+    navigation:
+      - radiusserver
+      - sipserver
+      - gtpserver
+    routes:
+      radiusserver:
+        title: RADIUS servers
+        object:
+          name: radiusserver
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port
+              label: Port
+      sipserver:
+        title: SIP servers
+        object:
+          name: sipserver
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port
+              label: Port
+      gtpserver:
+        title: GTP servers
+        object:
+          name: gtpserver
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port
+              label: Port
+  defaultradius:
+    title: Default RADIUS username
+    object:
+      name: defaultradius
+      fields:
+        - name: username
+          label: Username
