@@ -41,6 +41,10 @@ CONFIG_SCHEMA = {
             "type": "boolean",
             "default": True
         },
+        "ignore_tls_verification": {
+            "type": "boolean",
+            "default": False
+        },
         "log_level": {
             "type": "string",
             "enum": [

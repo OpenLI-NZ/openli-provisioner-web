@@ -1,6 +1,7 @@
 ---
 api_url: http://localhost:8992
 api_auth_enabled: true
+ignore_tls_verification: false
 log_level: INFO
 
 redis_host: localhost

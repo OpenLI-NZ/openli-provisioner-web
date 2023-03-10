@@ -155,13 +155,18 @@ def api_route(path):
     else:
         auth = None
 
+    if config['ignore_tls_verification']:
+        verify=False
+    else:
+        verify=True
+
     try:
         r = requests.request(
             method=request.method,
             url=url_join(config["api_url"], path),
             params=request.args or None,
             json=request.json if request.is_json else None,
-            auth=auth
+            auth=auth, verify=verify
         )
         status = r.status_code
         if "application/json" in r.headers.get("Content-Type", ""):
@@ -197,10 +202,15 @@ def login_route():
             status = 400
             raise(APIRequestException(response, status))
 
+        if config['ignore_tls_verification']:
+            verify=False
+        else:
+            verify=True
         r = requests.request(
             method="GET",
             url=url_join(config['api_url'], 'agency'),  # Arbitrary endpoint to test authentication
-            auth=auth
+            auth=auth,
+            verify=verify
         )
         status = r.status_code
 
@@ -315,7 +325,7 @@ class APIRequestException(Exception):
             message = "Received invalid JSON from API"
             status = 502
         elif isinstance(e, requests.ConnectionError):
-            message = "Failed to connect to API endpoint, check that it can be reached"
+            message = "Failed to connect to API endpoint, check that it can be reached and that it has a valid certificate (if using TLS)"
             status = 500
         elif isinstance(e, requests.HTTPError):
             message = "Received an invalid HTTP response from API"
