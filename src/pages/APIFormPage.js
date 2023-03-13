@@ -15,7 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { useState, useCallback, useMemo } from "react";
-import { Button, Form, Spinner } from "react-bootstrap";
+import { Button, Form, Spinner, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { InfoIcon } from "@primer/octicons-react";
 import Message from "../components/Message";
 import { dataGet, dataSet, deepCopyJSON, dataTrim, pathJoin } from "../utilities/utils";
 import {
@@ -39,7 +40,8 @@ const inputTypeMap = {
     "ip": "text",
     "port": "number",
     "ip_range": "text",
-    "email": "text"
+    "email": "text",
+    "select": "select",
 }
 
 function APIFormPage({objectType, cancelCallback, config, object=null}) {
@@ -127,6 +129,21 @@ function APIFormFields({fields, fieldKey=[], state}) {
             const label = fieldLabel(field.route);
             const type = field.api.type || "str";
             const key = fieldKey.concat([field.route.name]);
+            const infoicon =
+                    ({ ref, ...triggerHandler }) => (
+                        <span ref={ref} {...triggerHandler}>
+                        <InfoIcon
+                            className="info-tooltip-icon" size={16}
+                            verticalAlign="middle"/>
+                        </span>
+                    );
+
+            //const rendertip = field.api.helptext ?
+            //        (<Tooltip> Foobar </Tooltip>) : <></>;
+
+            const rendertip = (props) => (
+                <Tooltip className="show" {...props}> Sample text </Tooltip>
+            );
 
             const requiredLabel = field.api.required ?
                 <span className="text-danger">*</span> :
@@ -136,6 +153,9 @@ function APIFormFields({fields, fieldKey=[], state}) {
                 return(
                     <div>
                         <label>{ label }{ requiredLabel }</label>
+                        <OverlayTrigger placement="top" overlay={rendertip}>
+                        { infoicon }
+                        </OverlayTrigger>
                         <div className="api-form-collection">
                             <APIFormDict
                                 field={ field }
@@ -148,10 +168,28 @@ function APIFormFields({fields, fieldKey=[], state}) {
                 return(
                     <div>
                         <label>{ label }{ requiredLabel }</label>
+                        <OverlayTrigger placement="top" overlay={rendertip}>
+                        { infoicon }
+                        </OverlayTrigger>
                         <APIFormList
                             field={ field }
                             fieldKey={ key }
                             state={ state }/>
+                    </div>
+                );
+            } else if (type === "select") {
+                const id = "input_" + key.join("_");
+                return (
+                    <div className="form-group">
+                        <label for={ id }>{ label }{ requiredLabel }</label>
+                        <OverlayTrigger placement="top" overlay={rendertip}>
+                        { infoicon }
+                        </OverlayTrigger>
+                        <APIFormSelect
+                            id={ id }
+                            field={ field }
+                            fieldKey={ key }
+                            state={ state } />
                     </div>
                 );
             } else {
@@ -159,6 +197,9 @@ function APIFormFields({fields, fieldKey=[], state}) {
                 return(
                     <div className="form-group">
                         <label for={ id }>{ label }{ requiredLabel }</label>
+                        <OverlayTrigger placement="top" overlay={rendertip}>
+                        { infoicon }
+                        </OverlayTrigger>
                         <APIFormInput
                             type={ type }
                             id={ id }
@@ -171,6 +212,28 @@ function APIFormFields({fields, fieldKey=[], state}) {
         }) }
         </>
     );
+}
+
+function APIFormSelect({id, field, fieldKey, state}) {
+    const value = dataGet(state.data, fieldKey);
+    const options = field.api.choices.map(
+            opt => <option key={opt} value={opt}>{opt}</option>);
+
+    const disabled = (state.method === "PUT" &&
+        state.objectType.api.key.includes(fieldKey[0])) ||
+        state.request.isLoading;
+
+    let element = (<Form.Select
+        type={ "text" }
+        id={ id }
+        defaultValue={ value ? value : field.api.defaultval }
+        onChange={ (event) => handleChange(event, fieldKey, state) }
+        disabled={ disabled }
+        >
+        {options}
+        </Form.Select>);
+
+    return element;
 }
 
 function APIFormInput({type, id, label, fieldKey, state}) {

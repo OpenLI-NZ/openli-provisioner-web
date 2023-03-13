@@ -38,6 +38,12 @@
     margin-bottom: 0.5rem;
 }
 
+.info-tooltip-icon {
+    margin-left: 0.75rem;
+    margin-right: 0.25rem;
+    size: medium;
+}
+
 .sidenav {
     padding-left: 0;
     padding-right: 0;

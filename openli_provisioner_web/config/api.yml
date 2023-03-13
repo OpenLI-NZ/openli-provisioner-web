@@ -65,8 +65,14 @@ objects:
         type: str
       accesstype:
         type: str
+        helptext: "Example Help Text"
       radiusident:
-        type: str
+        type: select
+        defaultval: "any"
+        choices:
+          - "any"
+          - "csid"
+          - "user"
       staticips:
         type: list
         elements:
