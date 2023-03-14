@@ -12,26 +12,33 @@ objects:
       agencyid:
         required: true
         type: str
+        helptext: "A unique identifier for this particular agency."
       hi2address:
         required: true
         type: ip
+        helptext: "The IP address where the agency will be listening for your Handover Interface 2 (HI2) connection."
       hi3address:
         required: true
         type: ip
+        helptext: "The IP address where the agency will be listening for your Handover Interface 3 (HI3) connection."
       hi2port:
         required: true
         type: port
+        helptext: "The TCP port where the agency will be listening for your Handover Interface 2 (HI2) connection."
       hi3port:
         required: true
         type: port
+        helptext: "The TCP port where the agency will be listening for your Handover Interface 3 (HI3) connection."
       keepalivefreq:
         type: int
         default: 300
         minimum: 0
+        helptext: "The number of seconds that the mediators should wait between each attempt to send a keep alive message on each handover interface. Set to 0 to disable sending keep alives."
       keepalivewait:
         type: int
         default: 30
         minimum: 0
+        helptext: "The number of seconds that the mediators should wait for a keep alive response from this agency before disconnecting them. Set to 0 to never disconnect an agency due to a missing keep alive response."
   ipintercept:
     path: /ipintercept
     key: [liid]
@@ -44,51 +51,64 @@ objects:
       liid:
         required: true
         type: str
+        helptext: "The Lawful Intercept identifier for this intercept. This is usually provided to you by the LEA when they request the intercept. Must be unique."
       authcc:
         required: true
         type: str
+        helptext: "The two-letter country code for the jurisdiction where the LEA that authorised this intercept is based (e.g. NZ, AU, IN, DE)"
       delivcc:
         required: true
         type: str
+        helptext: "The two-letter country code for the jurisdiction where the LEA that will be receiving this intercept is based (e.g. NZ, AU, IN, DE) -- usually, the same as the Authorisation country code."
       agencyid:
         required: true
         type: str
+        helptext: "The unique identifier of the agency that will be receiving this intercept."
         choices_source: agency
       mediator:
         required: true
         type: int
         minimum: 0
-      vendmirrorid:
-        type: int
+        helptext: "The unique identifier of the mediator which will forward the intercept to the agency."
       user:
         required: true
         type: str
+        helptext: "The AAA username for the intercept target (e.g. their username in RADIUS)."
       accesstype:
         type: str
-        helptext: "Example Help Text"
+        helptext: "The type of Internet connection provided to the intercept target. Valid access types are 'dialup', 'adsl', 'vdsl', 'fiber', 'wireless', 'lan', 'satellite', 'wimax', 'cable', 'mobile', 'wireless-other', and 'undefined'."
+      vendmirrorid:
+        type: int
+        helptext: "The intercept ID assigned to the packets emitted by a mirroring platform (such as JMirror or ALU mirroring) for the target user. Only set this option if you are using a vendor mirroring feature to redirect target traffic into OpenLI."
       radiusident:
         type: select
         defaultval: "any"
+        helptext: "Defines which RADIUS AVP should be used to recognise the target username. If set to 'user', the RADIUS Username AVP is used. If set to 'csid', the RADIUS Calling Station ID AVP is used."
         choices:
           - "any"
           - "csid"
           - "user"
       staticips:
         type: list
+        helptext: "Any static IP ranges which have been assigned to the target user and therefore won't be visible via any session management protocols. You can add multiple IP ranges to this list."
         elements:
           type: dict
           fields:
             iprange:
               required: true
               type: ip_range
+              helptext: "The IP range that has been assigned. Must be expressed as a prefix with slash notation, even if it is just a single address (e.g. 10.0.100.1/32). Both IPv4 and IPv6 ranges are allowed."
             sessionid:
               required: true
               type: int
               minimum: 0
+              helptext: "The communication identifier to associate with intercepted traffic from this address range. This should be unique for each IP range provided for an intercept."
       starttime:
+        helptext: "Only intercept traffic for this user observed after this time -- if not set, the intercept will begin immediately."
         type: unix_timestamp
       endtime:
         type: unix_timestamp
+        helptext: "Do not intercept traffic for this user observed after this time -- if not set, the intercept will continue indefinitely."
   voipintercept:
     path: /voipintercept
     key: [liid]
@@ -101,20 +121,25 @@ objects:
       liid:
         required: true
         type: str
+        helptext: "The Lawful Intercept identifier for this intercept. This is usually provided to you by the LEA when they request the intercept. Must be unique."
       authcc:
         required: true
         type: str
+        helptext: "The two-letter country code for the jurisdiction where the LEA that authorised this intercept is based (e.g. NZ, AU, IN, DE)"
       delivcc:
         required: true
+        helptext: "The two-letter country code for the jurisdiction where the LEA that will be receiving this intercept is based (e.g. NZ, AU, IN, DE) -- usually, the same as the Authorisation country code."
         type: str
       agencyid:
         required: true
         type: str
         choices_source: agency
+        helptext: "The unique identifier of the agency that will be receiving this intercept."
       mediator:
         required: true
         type: int
         minimum: 0
+        helptext: "The unique identifier of the mediator which will forward the intercept to the agency."
       siptargets:
         required: true
         type: list
@@ -124,12 +149,16 @@ objects:
             username:
               required: true
               type: str
+              helptext: "The SIP username for the intercept target. A leading '*' may be used as a wildcard to match any extra leading digits or characters (e.g. area or international dialing codes in front of a phone number)."
             realm:
               type: str
+              helptext: "The host, domain, or realm portion of the SIP identifier for the intercept target. If not set, all realms will be considered as valid for this target."
       starttime:
         type: unix_timestamp
+        helptext: "Only intercept traffic for this user observed after this time -- if not set, the intercept will begin immediately."
       endtime:
         type: unix_timestamp
+        helptext: "Do not intercept traffic for this user observed after this time -- if not set, the intercept will continue indefinitely."
   radiusserver:
     path: /radiusserver
     key: [ipaddress, port]
@@ -142,8 +171,10 @@ objects:
       ipaddress:
         required: true
         type: ip
+        helptext: "The IP address of the RADIUS server."
       port:
         required: true
+        helptext: "The port that the RADIUS server is listening on (don't forget to add both the Accounting and Auth ports!)"
         type: port
   sipserver:
     path: /sipserver
@@ -157,8 +188,10 @@ objects:
       ipaddress:
         required: true
         type: ip
+        helptext: "The IP address of the SIP server."
       port:
         required: true
+        helptext: "The port that the SIP server is listening on."
         type: port
   gtpserver:
     path: /gtpserver
@@ -172,8 +205,10 @@ objects:
       ipaddress:
         required: true
         type: ip
+        helptext: "The IP address of the GTP server."
       port:
         required: true
+        helptext: "The port that the GTP server is listening on."
         type: port
   defaultradius:
     path: /defaultradius
@@ -187,3 +222,4 @@ objects:
       username:
         required: true
         type: text
+        helptext: "The username that you want OpenLI to ignore when session tracking because it is a 'default' username that is pre-configured on CPE devices."

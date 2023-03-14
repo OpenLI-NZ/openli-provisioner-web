@@ -138,24 +138,25 @@ function APIFormFields({fields, fieldKey=[], state}) {
                         </span>
                     );
 
-            //const rendertip = field.api.helptext ?
-            //        (<Tooltip> Foobar </Tooltip>) : <></>;
-
             const rendertip = (props) => (
-                <Tooltip className="show" {...props}> Sample text </Tooltip>
-            );
+                    <Tooltip className="show" {...props}>
+                        {field.api.helptext}
+                    </Tooltip>);
 
             const requiredLabel = field.api.required ?
                 <span className="text-danger">*</span> :
-                <></>
+                <></>;
+
+            const tipOverlay = field.api.helptext ?
+                        (<OverlayTrigger placement="right" overlay={rendertip}>
+                        {infoicon}
+                        </OverlayTrigger>) : <></>;
 
             if(type === "dict") {
                 return(
                     <div>
                         <label>{ label }{ requiredLabel }</label>
-                        <OverlayTrigger placement="top" overlay={rendertip}>
-                        { infoicon }
-                        </OverlayTrigger>
+                        {tipOverlay}
                         <div className="api-form-collection">
                             <APIFormDict
                                 field={ field }
@@ -168,9 +169,7 @@ function APIFormFields({fields, fieldKey=[], state}) {
                 return(
                     <div>
                         <label>{ label }{ requiredLabel }</label>
-                        <OverlayTrigger placement="top" overlay={rendertip}>
-                        { infoicon }
-                        </OverlayTrigger>
+                        {tipOverlay}
                         <APIFormList
                             field={ field }
                             fieldKey={ key }
@@ -182,9 +181,7 @@ function APIFormFields({fields, fieldKey=[], state}) {
                 return (
                     <div className="form-group">
                         <label for={ id }>{ label }{ requiredLabel }</label>
-                        <OverlayTrigger placement="top" overlay={rendertip}>
-                        { infoicon }
-                        </OverlayTrigger>
+                        {tipOverlay}
                         <APIFormSelect
                             id={ id }
                             field={ field }
@@ -197,9 +194,7 @@ function APIFormFields({fields, fieldKey=[], state}) {
                 return(
                     <div className="form-group">
                         <label for={ id }>{ label }{ requiredLabel }</label>
-                        <OverlayTrigger placement="top" overlay={rendertip}>
-                        { infoicon }
-                        </OverlayTrigger>
+                        {tipOverlay}
                         <APIFormInput
                             type={ type }
                             id={ id }
