@@ -62,9 +62,8 @@ objects:
         helptext: "The two-letter country code for the jurisdiction where the LEA that will be receiving this intercept is based (e.g. NZ, AU, IN, DE) -- usually, the same as the Authorisation country code."
       agencyid:
         required: true
-        type: str
+        type: agencylist
         helptext: "The unique identifier of the agency that will be receiving this intercept."
-        choices_source: agency
       mediator:
         required: true
         type: int
@@ -75,8 +74,21 @@ objects:
         type: str
         helptext: "The AAA username for the intercept target (e.g. their username in RADIUS)."
       accesstype:
-        type: str
-        helptext: "The type of Internet connection provided to the intercept target. Valid access types are 'dialup', 'adsl', 'vdsl', 'fiber', 'wireless', 'lan', 'satellite', 'wimax', 'cable', 'mobile', 'wireless-other', and 'undefined'."
+        type: select
+        choices:
+          - "undefined"
+          - "adsl"
+          - "cable"
+          - "dialup"
+          - "fiber"
+          - "lan"
+          - "mobile"
+          - "satellite"
+          - "vdsl"
+          - "wimax"
+          - "wireless"
+          - "wireless-other"
+        helptext: "The type of Internet connection provided to the intercept target."
       vendmirrorid:
         type: int
         helptext: "The intercept ID assigned to the packets emitted by a mirroring platform (such as JMirror or ALU mirroring) for the target user. Only set this option if you are using a vendor mirroring feature to redirect target traffic into OpenLI."
@@ -132,8 +144,7 @@ objects:
         type: str
       agencyid:
         required: true
-        type: str
-        choices_source: agency
+        type: agencylist
         helptext: "The unique identifier of the agency that will be receiving this intercept."
       mediator:
         required: true

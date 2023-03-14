@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Button, Form, Spinner, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { InfoIcon } from "@primer/octicons-react";
 import Message from "../components/Message";
@@ -28,7 +28,7 @@ import {
     formatAPIData,
     toAPIObject
 } from "../utilities/api";
-import { useRequestJSON } from "../utilities/requests";
+import { useRequestJSON, useGetRequestJSON } from "../utilities/requests";
 import { getErrorMessage } from "../utilities/errors";
 
 const inputTypeMap = {
@@ -42,6 +42,7 @@ const inputTypeMap = {
     "ip_range": "text",
     "email": "text",
     "select": "select",
+    "agencylist": "agencylist",
 }
 
 function APIFormPage({objectType, cancelCallback, config, object=null}) {
@@ -176,6 +177,19 @@ function APIFormFields({fields, fieldKey=[], state}) {
                             state={ state }/>
                     </div>
                 );
+            } else if (type === "agencylist") {
+                const id = "input_" + key.join("_");
+                return (
+                    <div className="form-group">
+                        <label for={ id }>{ label }{ requiredLabel }</label>
+                        {tipOverlay}
+                        <APIFormAgencyList
+                            id={ id }
+                            field={ field }
+                            fieldKey={ key }
+                            state={ state } />
+                    </div>
+                );
             } else if (type === "select") {
                 const id = "input_" + key.join("_");
                 return (
@@ -226,6 +240,50 @@ function APIFormSelect({id, field, fieldKey, state}) {
         disabled={ disabled }
         >
         {options}
+        </Form.Select>);
+
+    return element;
+}
+
+function APIFormAgencyList({id, field, fieldKey, state}) {
+
+    const value = dataGet(state.data, fieldKey);
+    const disabled = state.request.isLoading;
+
+    const [agencies, setAgencies] = useState([]);
+
+    const requestCallback = useCallback((data, _) => {
+        if (data) {
+            setAgencies(data);
+        }
+    }, [setAgencies]);
+
+    const request = useGetRequestJSON("/" + pathJoin(["api", "/agency"]), requestCallback);
+    const requestStarted = useRef(false);
+
+    useEffect(() => {
+        if (!requestStarted.current) {
+            request.start();
+        }
+        if (!requestStarted.current) {
+            requestStarted.current = true;
+        }
+    }, [request]);
+
+    let element = (<Form.Select
+        type={ "text" }
+        id={ id }
+        defaultValue={ value ? value : "" }
+        onChange={ (event) => handleChange(event, fieldKey, state) }
+        disabled={ disabled }
+        >
+        {agencies.map((ag) => {
+            return (
+                <option key={ag.agencyid} value={ag.agencyid}>
+                    {ag.agencyid}
+                </option>
+            );
+        })}
         </Form.Select>);
 
     return element;
