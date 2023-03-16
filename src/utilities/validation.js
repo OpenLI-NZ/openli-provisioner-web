@@ -34,7 +34,9 @@ const validationFunctionMap = {
     "ip": validateIP,
     "ip_range": validateIPRange,
     "port": validatePort,
-    "email": validateEmail
+    "email": validateEmail,
+    "agencylist": validateAgency,
+    "select": validateString,
 }
 
 const posIntRegex = /^[0-9]+$/;
@@ -58,6 +60,7 @@ function validateAPIInput(apiField, data) {
             dataLength = 1;
         }
     }
+
     if(dataLength < 1) {
         if(apiField.required) {
             return {
@@ -96,6 +99,13 @@ function validateString(apiField, data) {
         return invalid("must be a string");
     }
 
+    return valid();
+}
+
+function validateAgency(apiField, data) {
+    if(!isString(data)) {
+        return invalid("must be a valid agency identifier.");
+    }
     return valid();
 }
 

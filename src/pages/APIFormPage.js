@@ -186,6 +186,7 @@ function APIFormFields({fields, fieldKey=[], state}) {
                         <APIFormAgencyList
                             id={ id }
                             field={ field }
+                            label={ label }
                             fieldKey={ key }
                             state={ state } />
                     </div>
@@ -199,6 +200,7 @@ function APIFormFields({fields, fieldKey=[], state}) {
                         <APIFormSelect
                             id={ id }
                             field={ field }
+                            label={ label }
                             fieldKey={ key }
                             state={ state } />
                     </div>
@@ -223,8 +225,9 @@ function APIFormFields({fields, fieldKey=[], state}) {
     );
 }
 
-function APIFormSelect({id, field, fieldKey, state}) {
+function APIFormSelect({id, field, label, fieldKey, state}) {
     const value = dataGet(state.data, fieldKey);
+    const validation = dataGet(state.validation, fieldKey);
     const options = field.api.choices.map(
             opt => <option key={opt} value={opt}>{opt}</option>);
 
@@ -238,25 +241,38 @@ function APIFormSelect({id, field, fieldKey, state}) {
         defaultValue={ value ? value : field.api.defaultval }
         onChange={ (event) => handleChange(event, fieldKey, state) }
         disabled={ disabled }
+        isInvalid={ validation.invalid }
         >
         {options}
         </Form.Select>);
 
-    return element;
+    return(
+        <>
+        { element }
+        { validation.invalid && <Form.Control.Feedback type="invalid">
+            { label } { validation.feedback }
+        </Form.Control.Feedback> }
+        </>
+    )
 }
 
-function APIFormAgencyList({id, field, fieldKey, state}) {
+function APIFormAgencyList({id, field, label, fieldKey, state}) {
 
     const value = dataGet(state.data, fieldKey);
     const disabled = state.request.isLoading;
+    const validation = dataGet(state.validation, fieldKey);
 
     const [agencies, setAgencies] = useState([]);
+    const [defaultValue, setDefaultValue] = useState("");
 
     const requestCallback = useCallback((data, _) => {
         if (data) {
             setAgencies(data);
+            setDefaultValue(data[0].agencyid);
+            dataSet(state.data, fieldKey, data[0].agencyid);
+            state.setData(state.data);
         }
-    }, [setAgencies]);
+    }, [setAgencies, fieldKey, state]);
 
     const request = useGetRequestJSON("/" + pathJoin(["api", "/agency"]), requestCallback);
     const requestStarted = useRef(false);
@@ -273,9 +289,10 @@ function APIFormAgencyList({id, field, fieldKey, state}) {
     let element = (<Form.Select
         type={ "text" }
         id={ id }
-        defaultValue={ value ? value : "" }
+        defaultValue={ value ? value : defaultValue }
         onChange={ (event) => handleChange(event, fieldKey, state) }
         disabled={ disabled }
+        isInvalid={ validation.invalid }
         >
         {agencies.map((ag) => {
             return (
@@ -286,7 +303,14 @@ function APIFormAgencyList({id, field, fieldKey, state}) {
         })}
         </Form.Select>);
 
-    return element;
+    return(
+        <>
+        { element }
+        { validation.invalid && <Form.Control.Feedback type="invalid">
+            { label } { validation.feedback }
+        </Form.Control.Feedback> }
+        </>
+    )
 }
 
 function APIFormInput({type, id, label, fieldKey, state}) {

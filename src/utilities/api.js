@@ -92,6 +92,8 @@ function initialAPIDataValue(apiField) {
         } else {
             return [];
         }
+    } else if (apiField.type === "select" && apiField.defaultval) {
+        return apiField.defaultval;
     } else {
         return "";
     }
