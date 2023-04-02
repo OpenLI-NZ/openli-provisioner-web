@@ -15,7 +15,7 @@ build:
 	npm run build
 
 install:
-	mkdir -p "${DESTDIR}${prefix}/lib/openli-provisioner-web"
+	mkdir -p "${DESTDIR}${prefix}/lib/openli-provisioner-web/openli_provisioner_web/build"
 	cp -r openli_provisioner_web/* "${DESTDIR}${prefix}/lib/openli-provisioner-web/openli_provisioner_web/"
 	cp -r build/* "${DESTDIR}${prefix}/lib/openli-provisioner-web/openli_provisioner_web/build/"
 
