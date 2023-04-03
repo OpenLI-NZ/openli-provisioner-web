@@ -7,7 +7,7 @@ set -e
 
 case "$1" in
     configure)
-        /usr/bin/openli-provisioner-web-install.sh
+        /usr/bin/openli-web-provisioner-install.sh
         ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

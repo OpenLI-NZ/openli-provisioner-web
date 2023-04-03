@@ -5,6 +5,9 @@ SPACE=/usr/local/src/openli-provisioner-web
 mkdir -p ${SPACE}
 cd ${SPACE}
 
+curl -sL https://deb.nodesource.com/setup_14.x | bash -
+apt install -y nodejs
+
 npm i @openli/openli-provisioner-web
 cd node_modules/\@openli/openli-provisioner-web
 
