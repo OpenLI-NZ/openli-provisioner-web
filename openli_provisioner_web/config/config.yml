@@ -10,3 +10,5 @@ redis_db: 0
 
 session_cookie_path: /
 session_cookie_secure: false
+session_cookie_domain: my.example.domain.org
+session_cookie_signing_key: thisisaverylongsigningkeyforsecurityreasons
