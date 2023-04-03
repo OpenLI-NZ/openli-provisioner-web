@@ -1,2 +1,1 @@
-scripts/openli-provisioner-web-install.sh usr/bin
-scripts/openli-provisioner-web-uninstall.sh usr/bin
+usr/bin/*.sh

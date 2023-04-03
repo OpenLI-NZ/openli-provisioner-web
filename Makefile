@@ -5,8 +5,8 @@ prefix ?= /usr
 all: build
 
 clean:
-	rm -r build
-	rm -r node_modules
+	rm -rf build
+	rm -rf node_modules
 
 pre_build:
 	npm install
@@ -26,4 +26,4 @@ install_venv:
 	"${DESTDIR}${prefix}/lib/openli-provisioner-web/venv/bin/pip" install gunicorn
 
 uninstall:
-	rm -r "${DESTDIR}${prefix}/lib/openli-provisioner-web"
+	rm -rf "${DESTDIR}${prefix}/lib/openli-provisioner-web"
