@@ -1,0 +1,24 @@
+#!/bin/sh
+# postinst script for openli-provisioner-web
+#
+# see: dh_installdeb(1)
+
+set -e
+
+case "$1" in
+    configure)
+        /usr/bin/openli-provisioner-web-install.sh
+        ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0
