@@ -13,11 +13,19 @@ systemctl daemon-reload
 rm -r /etc/openli-provisioner-web
 deluser openli-provisioner-web
 
+nvm use 14
 if [ -d ${SPACE}/node_modules/\@openli/openli-provisioner-web ]; then
     cd ${SPACE}/node_modules/\@openli/openli-provisioner-web
     make prefix=/usr/local uninstall
 fi
 
+if [ -f ${SPACE}/.nvm-installed ]; then
+    nvm deactivate
+    nvm unload
+    sed -i '/NVM_DIR/d' ${HOME}/.bashrc
+fi
+
 if [ -d ${SPACE} ]; then
     rm -r ${SPACE}
 fi
+
