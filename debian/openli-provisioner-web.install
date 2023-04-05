@@ -1,1 +1,4 @@
 usr/bin/*.sh
+etc/openli-provisioner-web/*
+etc/systemd/system/openli-provisioner-web.service
+etc/apache2/sites-available/openli-provisioner-web.conf

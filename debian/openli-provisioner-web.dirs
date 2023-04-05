@@ -1,1 +1,4 @@
 /usr/bin
+/etc/openli-provisioner-web
+/etc/systemd/system
+/etc/apache2/sites-available
