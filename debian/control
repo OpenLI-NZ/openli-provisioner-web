@@ -10,7 +10,8 @@ Package: openli-provisioner-web
 Section: net
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, redis-server,
-                python3-venv, apache2, systemctl, sudo, curl, lsb-release
+                python3-venv, apache2, systemctl, sudo, curl, lsb-release,
+                make
 Description: A simple web-based UI for the OpenLI provisioning API.
  OpenLI is a software suite that allows network operators to conduct
  lawful interception of Internet traffic that is compliant with the
