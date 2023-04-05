@@ -8,13 +8,6 @@ override_dh_auto_build:
 override_dh_auto_install:
 
 override_dh_install:
+	dh_install
 	cp scripts/*.sh /usr/bin/
-	mkdir -p /etc/openli-provisioner-web
-	mkdir -p /etc/systemd/system
-	mkdir -p /etc/apache2/sites-available
-	cp openli_provisioner_web/config/config.yml /etc/openli-provisioner-web/ 
-	cp contrib/gunicorn.py /etc/openli-provisioner-web/gunicorn.py
-	cp contrib/service.env /etc/openli-provisioner-web/service.env
-	cp contrib/example.service /etc/systemd/system/openli-provisioner-web.service
-	cp contrib/apache.conf /etc/apache2/sites-available/openli-provisioner-web.conf
 

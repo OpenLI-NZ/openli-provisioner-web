@@ -1,4 +1,6 @@
-usr/bin/*.sh
-etc/openli-provisioner-web/*
-etc/systemd/system/openli-provisioner-web.service
-etc/apache2/sites-available/openli-provisioner-web.conf
+scripts/*.sh usr/bin/
+openli_provisioner_web/config/config.yml etc/openli-provisioner-web/
+contrib/gunicorn.py etc/openli-provisioner-web/
+contrib/service.env etc/openli-provisioner-web/
+contrib/example.service etc/systemd/system/
+contrib/apache.conf etc/apache2/sites-available/
