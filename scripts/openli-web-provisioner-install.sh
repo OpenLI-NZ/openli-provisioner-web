@@ -21,12 +21,12 @@ cd node_modules/\@openli/openli-provisioner-web
 make pre_build
 make build
 make prefix=/usr/local install
-mkdir /usr/local/lib/openli-provisioner-web/venv
+mkdir -p /usr/local/lib/openli-provisioner-web/venv
 chown nobody:nogroup /usr/local/lib/openli-provisioner-web/venv
 sudo -u nobody make prefix=/usr/local install_venv
 make clean
 
-mkdir -m 700 /etc/openli-provisioner-web
+mkdir -p -m 700 /etc/openli-provisioner-web
 
 if [ ! -f /etc/openli-provisioner-web/config.yml ]; then
     cp openli_provisioner_web/config/config.yml /etc/openli-provisioner-web/config.yml
