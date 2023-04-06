@@ -46,7 +46,7 @@ adduser -q --system --group openli-provisioner-web --shell /usr/sbin/nologin --n
 chown --recursive openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
 
 if [ ! -f /etc/systemd/system/openli-provisioner-web.service ]; then
-    cp contrib/example.service /etc/systemd/system/openli-provisioner-web.service
+    cp contrib/openli-provisioner-web.service /etc/systemd/system/openli-provisioner-web.service
 fi
 systemctl daemon-reload
 
@@ -54,7 +54,7 @@ systemctl enable openli-provisioner-web
 systemctl start redis-server
 
 if [ ! -f /etc/apache2/sites-available/openli-provisioner-web.conf ]; then
-    cp contrib/apache.conf /etc/apache2/sites-available/openli-provisioner-web.conf
+    cp contrib/apache2/openli-provisioner-web.conf /etc/apache2/sites-available/openli-provisioner-web.conf
 fi
 
 a2enmod ssl proxy proxy_http headers
