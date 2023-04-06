@@ -1,0 +1,64 @@
+name: Packaging for Debian and Ubuntu
+
+jobs:
+  build:
+     runs-on: ubuntu-latest
+     container:
+       image: ${{ matrix.target }}
+     strategy:
+       fail-fast: false
+       matrix:
+         arch:
+           - amd64
+         target:
+           - "debian:buster"
+           - "debian:bullseye"
+           - "ubuntu:bionic"
+           - "ubuntu:focal"
+           - "ubuntu:jammy"
+
+     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Install prereq packages
+        run: ./debpkg-setup.sh
+      - name: Build packages
+        run: ./debpkg-build.sh
+      - name: Set environment variables for upload
+        run: export DIRNAME=`echo ${{ matrix.target }} | tr ':' '_'`
+      - name: Store packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: packages-${DIRNAME}
+          path: ../*.deb
+          retention-days: 1
+
+  test:
+     runs-on: ubuntu-latest
+     container:
+       image: ${{ matrix.target }}
+     strategy:
+       fail-fast: false
+       matrix:
+         arch:
+           - amd64
+         target:
+           - "debian:buster"
+           - "debian:bullseye"
+           - "ubuntu:bionic"
+           - "ubuntu:focal"
+           - "ubuntu:jammy"
+     needs: build
+     steps:
+       - name: Set environment variables for download
+         run: export DIRNAME=`echo ${{ matrix.target }} | tr ':' '_'`
+       - name: Download artifact
+         uses: actions/download-artifact@v3
+         with:
+           name: packages-${DIRNAME}
+       - name: Test package install
+         run: |
+           find . -name "*.deb" | xargs apt install -y
+
+
+
