@@ -15,11 +15,11 @@ DISTRO=$(lsb_release -sc)
 
 case ${DISTRO} in
         bullseye )
-                sed -i 's/ dh-systemd (>=1.5),//' debian/control
+                sed -i 's/ dh-systemd (>=1.5)//' debian/control
         ;;
 
         jammy )
-                sed -i 's/ dh-systemd (>=1.5),//' debian/control
+                sed -i 's/ dh-systemd (>=1.5)//' debian/control
         ;;
 
         bionic )
