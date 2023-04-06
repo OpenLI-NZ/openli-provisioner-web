@@ -31,11 +31,15 @@ jobs:
         run: ./debpkg-build.sh
       - name: Set environment variables for upload
         run: export DIRNAME=`echo ${{ matrix.target }} | tr ':' '_'`
+      - name: Copy packages to uploadable location
+        run: |
+          mkdir -p packages/${DIRNAME}
+          cp ../*.deb packages/${DIRNAME}/
       - name: Store packages
         uses: actions/upload-artifact@v3
         with:
           name: packages-${DIRNAME}
-          path: ../*.deb
+          path: packages/${DIRNAME}/*.deb
           retention-days: 1
 
   test:
