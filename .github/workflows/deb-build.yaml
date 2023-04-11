@@ -67,6 +67,7 @@ jobs:
            name: packages-${{ env.DIRNAME }}
        - name: Test package install
          run: |
+           apt update -y
            find . -name "*.deb" | xargs apt install -y
 
 
