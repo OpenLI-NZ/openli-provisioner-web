@@ -30,7 +30,7 @@ jobs:
       - name: Build packages
         run: ./debpkg-build.sh
       - name: Set environment variables for upload
-        run: export DIRNAME=`echo ${{ matrix.target }} | tr ':' '_'`
+        run: echo DIRNAME=${{ matrix.target }} | tr ':' '_' >> $GITHUB_ENV
       - name: Copy packages to uploadable location
         run: |
           mkdir -p packages/${DIRNAME}
@@ -38,8 +38,8 @@ jobs:
       - name: Store packages
         uses: actions/upload-artifact@v3
         with:
-          name: packages-${DIRNAME}
-          path: packages/${DIRNAME}/*.deb
+          name: packages-${{ env.DIRNAME }}
+          path: packages/${{ env.DIRNAME }}/*.deb
           retention-days: 1
 
   test:
@@ -60,11 +60,11 @@ jobs:
      needs: build
      steps:
        - name: Set environment variables for download
-         run: export DIRNAME=`echo ${{ matrix.target }} | tr ':' '_'`
+         run: echo DIRNAME=${{ matrix.target }} | tr ':' '_' >> $GITHUB_ENV
        - name: Download artifact
          uses: actions/download-artifact@v3
          with:
-           name: packages-${DIRNAME}
+           name: packages-${{ env.DIRNAME }}
        - name: Test package install
          run: |
            find . -name "*.deb" | xargs apt install -y
