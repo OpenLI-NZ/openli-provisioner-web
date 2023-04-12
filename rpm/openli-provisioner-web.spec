@@ -36,17 +36,17 @@ cp -a scripts/*-rpm.sh %{buildroot}/%{_bindir}
 %post
 %{_bindir}/openli-web-provisioner-install-rpm.sh
 
-if [ $1 == 1]; then
+if [ $1 == 1 ]; then
     %{_bindir}/openli-web-provisioner-postinst-rpm.sh
 fi
 
 %preun
-if [ $1 == 0] ; then
+if [ $1 == 0 ] ; then
     %{_bindir}/openli-web-provisioner-uninstall-rpm.sh
 fi
 
 %postun
-if [ $1 == 1]; then
+if [ $1 == 1 ]; then
     %{_bindir}/openli-web-provisioner-postupgrade-rpm.sh
 fi
 
