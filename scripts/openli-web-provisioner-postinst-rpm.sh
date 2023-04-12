@@ -5,9 +5,9 @@ useradd -r -g openli-provisioner-web -s /usr/sbin/nologin -M openli-provisioner-
 chown -R openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
 
 echo "Re-enabling httpd config, if it had been disabled"
-if [ -f /etc/httpd/sites-available/openli-provisioner-web.conf.disabled ]; then
-    mv /etc/httpd/sites-available/openli-provisioner-web.conf.disabled \
-                /etc/httpd/sites-available/openli-provisioner-web.conf
+if [ -f /etc/httpd/conf.d/openli-provisioner-web.conf.disabled ]; then
+    mv /etc/httpd/conf.d/openli-provisioner-web.conf.disabled \
+                /etc/httpd/conf.d/openli-provisioner-web.conf
 fi
 
 # TODO test on a VM or container that allows systemctl to run
@@ -22,7 +22,7 @@ echo "Configuration files may require editing before starting the web UI"
 echo
 echo "Look at:"
 echo "   /etc/openli-provisioner-web/config.yml "
-echo "   /etc/httpd/sites-available/openli-provisioner-web.conf"
+echo "   /etc/httpd/conf.d/openli-provisioner-web.conf"
 echo "   /etc/openli-provisioner-web/gunicorn.py "
 echo
 echo "Once you're happy with the configuration, you can start the UI service by running: "
