@@ -9,5 +9,5 @@ override_dh_auto_install:
 
 override_dh_install:
 	dh_install
-	cp scripts/*.sh /usr/bin/
+	cp scripts/*-deb.sh /usr/bin/
 
