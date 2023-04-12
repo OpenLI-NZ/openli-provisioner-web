@@ -1,7 +1,7 @@
 #!/bin/bash
 
 groupadd -f -r openli-provisioner-web || true
-useradd -r -g openli-provisioner-web -s /usr/sbin/nologin -M || true
+useradd -r -g openli-provisioner-web -s /usr/sbin/nologin -M openli-provisioner-web || true
 chown -R openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
 
 echo "Re-enabling httpd config, if it had been disabled"

@@ -31,22 +31,22 @@ OpenLI.
 
 %install
 mkdir -p %{buildroot}/%{_bindir}
-cp -a scripts/*.sh %{buildroot}/%{_bindir}
+cp -a scripts/*-rpm.sh %{buildroot}/%{_bindir}
 
 %post
-%{_bindir}/openli-web-provisioner-install.sh
-%{_bindir}/openli-web-provisioner-postinst.sh
+%{_bindir}/openli-web-provisioner-install-rpm.sh
+%{_bindir}/openli-web-provisioner-postinst-rpm.sh
 
 %preun
-%{_bindir}/openli-web-provisioner-uninstall.sh
+%{_bindir}/openli-web-provisioner-uninstall-rpm.sh
 
 %postun
-rm %{_bindir}/openli-web-provisioner-*.sh
+rm %{_bindir}/openli-web-provisioner-*-rpm.sh
 
 %files
-%{_bindir}/openli-web-provisioner-install.sh
-%{_bindir}/openli-web-provisioner-postinst.sh
-%{_bindir}/openli-web-provisioner-uninstall.sh
+%{_bindir}/openli-web-provisioner-install-rpm.sh
+%{_bindir}/openli-web-provisioner-postinst-rpm.sh
+%{_bindir}/openli-web-provisioner-uninstall-rpm.sh
 
 %changelog
 * Tue Apr 11 2023 Shane Alcock <shane@alcock.co.nz> - 1.0.0-1
