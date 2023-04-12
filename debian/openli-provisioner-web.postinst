@@ -7,6 +7,7 @@ set -e
 
 case "$1" in
     configure)
+	/usr/bin/openli-web-provisioner-install.sh
         /usr/bin/openli-web-provisioner-postinst.sh
         ;;
 
