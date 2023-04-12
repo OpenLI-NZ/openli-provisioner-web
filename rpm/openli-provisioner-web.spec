@@ -15,6 +15,8 @@ Requires: systemd
 Requires: sudo
 Requires: curl
 Requires: make
+Requires: findutils
+Requires: mod_ssl
 
 %description
 OpenLI is a software suite that allows network operators to conduct

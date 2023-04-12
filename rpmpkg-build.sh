@@ -7,7 +7,6 @@ SOURCENAME=`echo ${GITHUB_REF##*/} | cut -d '-' -f 1`
 
 mkdir -p build_tarball/openli-provisioner-web-${SOURCENAME}/scripts
 cp scripts/*.sh build_tarball/openli-provisioner-web-${SOURCENAME}/scripts/
-cp -r contrib/
 
 cd build_tarball
 

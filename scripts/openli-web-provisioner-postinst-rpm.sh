@@ -1,24 +1,30 @@
 #!/bin/bash
 
-addgroup -q --system openli-provisioner-web || true
-adduser -q --system --group openli-provisioner-web --shell /usr/sbin/nologin --no-create-home --home /nonexistent || true
-chown --recursive openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
+groupadd -f -r openli-provisioner-web || true
+useradd -r -g openli-provisioner-web -s /usr/sbin/nologin -M || true
+chown -R openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
 
-systemctl daemon-reload
+echo "Re-enabling httpd config, if it had been disabled"
+if [ -f /etc/httpd/sites-available/openli-provisioner-web.conf.disabled ]; then
+    mv /etc/httpd/sites-available/openli-provisioner-web.conf.disabled \
+                /etc/httpd/sites-available/openli-provisioner-web.conf
+fi
 
-systemctl enable openli-provisioner-web
-systemctl start redis-server
+# TODO test on a VM or container that allows systemctl to run
+echo "Starting base services -- may print errors if you are installing"
+echo "this in a container, but these can be ignored..."
+systemctl daemon-reload || true
 
-a2enmod ssl proxy proxy_http headers
-a2ensite openli-provisioner-web
+systemctl enable openli-provisioner-web || true
+systemctl start redis-server || /usr/bin/redis-server /etc/redis/redis.conf --daemonize yes
 
 echo "Configuration files may require editing before starting the web UI"
 echo
 echo "Look at:"
 echo "   /etc/openli-provisioner-web/config.yml "
-echo "   /etc/apache2/sites-available/openli-provisioner-web.conf"
+echo "   /etc/httpd/sites-available/openli-provisioner-web.conf"
 echo "   /etc/openli-provisioner-web/gunicorn.py "
 echo
 echo "Once you're happy with the configuration, you can start the UI service by running: "
-echo "    sudo systemctl restart apache2 "
+echo "    sudo systemctl restart httpd "
 echo "    sudo systemctl start openli-provisioner-web "

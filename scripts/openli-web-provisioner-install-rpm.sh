@@ -45,7 +45,7 @@ if [ ! -f /etc/systemd/system/openli-provisioner-web.service ]; then
     cp contrib/openli-provisioner-web.service /etc/systemd/system/openli-provisioner-web.service
 fi
 
-if [ ! -f /etc/apache2/sites-available/openli-provisioner-web.conf ]; then
-    cp contrib/apache2/openli-provisioner-web.conf /etc/apache2/sites-available/openli-provisioner-web.conf
+if [ ! -f /etc/httpd/conf.d/openli-provisioner-web.conf ]; then
+    cp contrib/apache2/openli-provisioner-web.conf /etc/httpd/conf.d/openli-provisioner-web.conf
 fi
 
