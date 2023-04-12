@@ -40,9 +40,6 @@ cp -a scripts/*-rpm.sh %{buildroot}/%{_bindir}
 %preun
 %{_bindir}/openli-web-provisioner-uninstall-rpm.sh
 
-%postun
-rm %{_bindir}/openli-web-provisioner-*-rpm.sh
-
 %files
 %{_bindir}/openli-web-provisioner-install-rpm.sh
 %{_bindir}/openli-web-provisioner-postinst-rpm.sh
