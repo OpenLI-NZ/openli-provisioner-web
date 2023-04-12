@@ -2,9 +2,7 @@
 
 SPACE=/usr/local/src/openli-provisioner-web
 
-echo "Renaming existing apache config file to add .disabled suffix..."
-mv /etc/httpd/conf.d/openli-provisioner-web.conf \
-        /etc/httpd/conf.d/openli-provisioner-web.conf.disabled
+rm /etc/httpd/conf.d/openli-provisioner-web.conf
 
 echo "Trying to stop services -- may generate error messages if running"
 echo "in a container..."
@@ -14,6 +12,8 @@ systemctl disable openli-provisioner-web
 systemctl daemon-reload
 
 userdel openli-provisioner-web
+
+/usr/libexec/redis-shutdown
 
 echo "Removing react app from ${SPACE}..."
 export NVM_DIR="$HOME/.nvm"
@@ -28,6 +28,9 @@ fi
 if [ -d ${SPACE} ]; then
     rm -r ${SPACE}
 fi
+
+rm -rf /etc/openli-provisioner-web
+rm /etc/systemd/system/openli-provisioner-web.service
 
 echo
 echo "OpenLI provisioner web has been uninstalled, but we've left nvm"
