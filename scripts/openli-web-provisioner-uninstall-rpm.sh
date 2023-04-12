@@ -13,8 +13,6 @@ systemctl daemon-reload
 
 userdel openli-provisioner-web
 
-/usr/libexec/redis-shutdown
-
 echo "Removing react app from ${SPACE}..."
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -39,4 +37,11 @@ echo
 echo "If you don't need them anymore and want to clean them up, please"
 echo "run the following: "
 echo "    nvm deactivate; nvm unload; sed -i '/NVM_DIR/d' ${HOME}/.bashrc"
+echo
+echo "We've also left the redis service running, just in case you were"
+echo "using it for something else as well."
+echo
+echo "If you don't need redis any more, you should probably remove it"
+echo "by running: "
+echo "    yum remove redis "
 echo
