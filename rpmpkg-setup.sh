@@ -17,7 +17,6 @@ if [[ "$1" =~ alma* ]]; then
         dnf install -y dnf-plugins-core epel-release || true
         dnf config-manager --set-enabled powertools || true
         dnf config-manager --set-enabled crb || true
-        yum module -y enable mariadb mariadb-devel
 fi
 
 if [ "$1" = "centos:8" ]; then
