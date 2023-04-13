@@ -66,6 +66,8 @@ jobs:
          with:
            name: packages-${{ env.DIRNAME }}
        - name: Test package install
+         env:
+           DEBIAN_FRONTEND: noninteractive
          run: |
            apt update -y
            find . -name "*.deb" | xargs apt install -y
