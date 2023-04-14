@@ -65,6 +65,7 @@ jobs:
            name: packages-${{ env.DIRNAME }}
        - name: Test package install
          run: |
+           yum install -y findutils
            find . -name "*.rpm" | xargs yum install -y
 
 
