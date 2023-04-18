@@ -1,0 +1,24 @@
+#!/bin/sh
+# postrm script for openli-provisioner-web
+#
+# see: dh_installdeb(1)
+
+set -e
+
+case "$1" in
+    remove)
+        /usr/bin/openli-web-provisioner-uninstall-deb.sh $1
+        ;;
+    failed-upgrade|purge|upgrade|abort-upgrade|abort-remove|abort-install)
+        ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+

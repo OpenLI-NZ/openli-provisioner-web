@@ -7,13 +7,13 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-        /usr/bin/openli-web-provisioner-uninstall-deb.sh
+        /usr/bin/openli-web-provisioner-prerm-deb.sh $1
         ;;
     failed-upgrade)
         ;;
 
     *)
-        echo "postinst called with unknown argument \`$1'" >&2
+        echo "prerm called with unknown argument \`$1'" >&2
         exit 1
         ;;
 esac
