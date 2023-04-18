@@ -24,5 +24,5 @@ make prefix=/usr/local install
 make clean
 
 mkdir -p /usr/local/lib/openli-provisioner-web/venv
-chown nobody:nobody /usr/local/lib/openli-provisioner-web/venv
+chown nobody:nogroup /usr/local/lib/openli-provisioner-web/venv
 sudo -u nobody make prefix=/usr/local install_venv
