@@ -46,7 +46,6 @@ fi
 
 mkdir -p -m 700 /etc/openli-provisioner-web
 
-chown -R openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
 
 if [ ! -f /etc/openli-provisioner-web/config.yml ]; then
     cp openli_provisioner_web/config/config.yml /etc/openli-provisioner-web/config.yml
@@ -60,6 +59,8 @@ fi
 if [ ! -f /etc/openli-provisioner-web/service.env ]; then
     cp contrib/service.env /etc/openli-provisioner-web/service.env
 fi
+
+chown -R openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
 
 if [ ! -d /etc/systemd/system ]; then
     echo "Unable to install service file to /etc/systemd/system..."
