@@ -97,6 +97,7 @@ jobs:
        - name: Copy packages
          run: |
            mkdir -p packages/${DIRNAME}
+           yum install -y findutils
            find . -name "*.rpm" | xargs cp -t packages/${DIRNAME}/
        - name: Publish package to cloudsmith
          uses: wanduow/action-cloudsmith-upload-packages@v1
