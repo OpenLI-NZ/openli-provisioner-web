@@ -38,11 +38,7 @@ else
     groupadd -f -r openli-provisioner-web || true
 fi
 
-if which adduser > /dev/null; then
-    adduser -q --system --group openli-provisioner-web --shell /usr/sbin/nologin --no-create-home --home /nonexistent
-else
-    useradd -r -g openli-provisioner-web -s /usr/sbin/nologin -M openli-provisioner-web || true
-fi
+useradd -r -g openli-provisioner-web -s /usr/sbin/nologin -M openli-provisioner-web || true
 
 mkdir -p -m 700 /etc/openli-provisioner-web
 
