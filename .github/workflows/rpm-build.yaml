@@ -69,7 +69,7 @@ jobs:
            find . -name "*.rpm" | xargs yum install -y
        - name: Test package removal
          run:
-           yum remove openli-provisioner-web
+           rpm -e openli-provisioner-web
 
 
   publish:
