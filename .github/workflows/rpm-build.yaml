@@ -1,0 +1,111 @@
+name: Packaging for RPM
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+     runs-on: ubuntu-latest
+     container:
+       image: ${{ matrix.target }}
+     strategy:
+       fail-fast: false
+       matrix:
+         arch:
+           - amd64
+         target:
+           - "rockylinux:8.6"
+           - "rockylinux:9.0"
+           - "fedora:37"
+           - "fedora:36"
+
+     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Install prereq packages
+        run: ./rpmpkg-setup.sh ${{ matrix.target }}
+      - name: Build packages
+        run: ./rpmpkg-build.sh
+      - name: Set environment variables for upload
+        run: echo DIRNAME=${{ matrix.target }} | tr ':' '_' >> $GITHUB_ENV
+      - name: Copy packages to uploadable location
+        run: |
+          mkdir -p packages/${DIRNAME}
+          cp ~/rpmbuild/RPMS/x86_64/*.rpm packages/${DIRNAME}/
+      - name: Store packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: packages-${{ env.DIRNAME }}
+          path: packages/${{ env.DIRNAME }}/*.rpm
+          retention-days: 1
+
+  test:
+     runs-on: ubuntu-latest
+     container:
+       image: ${{ matrix.target }}
+     strategy:
+       fail-fast: false
+       matrix:
+         arch:
+           - amd64
+         target:
+           - "rockylinux:8.6"
+           - "rockylinux:9.0"
+           - "fedora:37"
+           - "fedora:36"
+     needs: build
+     steps:
+       - name: Set environment variables for download
+         run: echo DIRNAME=${{ matrix.target }} | tr ':' '_' >> $GITHUB_ENV
+       - name: Download artifact
+         uses: actions/download-artifact@v3
+         with:
+           name: packages-${{ env.DIRNAME }}
+       - name: Test package install
+         run: |
+           yum install -y findutils
+           find . -name "*.rpm" | xargs yum install -y
+       - name: Test package removal
+         run:
+           rpm -e openli-provisioner-web
+
+
+  publish:
+     runs-on: ubuntu-latest
+     container:
+       image: ${{ matrix.target }}
+     strategy:
+       fail-fast: false
+       matrix:
+         arch:
+           - amd64
+         target:
+           - "rockylinux:8.6"
+           - "rockylinux:9.0"
+           - "fedora:37"
+           - "fedora:36"
+     needs: test
+     steps:
+       - name: Set environment variables for download
+         run: echo DIRNAME=${{ matrix.target }} | tr ':' '_' >> $GITHUB_ENV
+       - name: Download artifact
+         uses: actions/download-artifact@v3
+         with:
+           name: packages-${{ env.DIRNAME }}
+       - name: Copy packages
+         run: |
+           mkdir -p packages/${DIRNAME}
+           yum install -y findutils
+           find . -name "*.rpm" | xargs cp -t packages/${DIRNAME}/
+       - name: Publish package to cloudsmith
+         uses: wanduow/action-cloudsmith-upload-packages@v1
+         with:
+           path: packages/
+           repo: ${{ secrets.CLOUDSMITH_OWNER }}/openli
+           username: salcock
+           api_key: ${{ secrets.CLOUDSMITH_API_KEY }}
+
+
+

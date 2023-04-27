@@ -1,0 +1,12 @@
+debian
+debpkg-build.sh
+debpkg-setup.sh
+rpmpkg-build.sh
+rpmpkg-setup.sh
+rpm
+*.deb
+*.rpm
+node_modules
+openli_provisioner_web/build
+build
+.github

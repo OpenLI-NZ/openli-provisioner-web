@@ -1,0 +1,6 @@
+scripts/*-deb.sh usr/bin/
+openli_provisioner_web/config/config.yml etc/openli-provisioner-web/
+contrib/gunicorn.py etc/openli-provisioner-web/
+contrib/service.env etc/openli-provisioner-web/
+contrib/*.service etc/systemd/system/
+contrib/apache2/*.conf etc/apache2/sites-available/
