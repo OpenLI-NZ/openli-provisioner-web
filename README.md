@@ -4,85 +4,66 @@ Web interface for the OpenLI provisioner.
 
 ## Installation
 
-### Install from source
+For more details on how to install and configure this software, please
+go to the wiki page at
+https://github.com/OpenLI-NZ/openli/wiki/OpenLI-Provisioner-Web-UI
+
+### Manual install
 
 1. Install requirements:
-    * nodejs >= 14.0.0
-      > ***Note:*** If newer versions are not available on your
-      distribution, install nodejs via
-      https://nodejs.org/en/download/package-manager/
     * python >= 3.6
     * python3-venv
     * redis-server
+    * systemd
+    * curl
     * make
+    * sudo
     * apache2 (optional)
-2. Download and extract the release source code
-3. Install via make:
+
+2. Clone the github repository and change into the cloned directory:
     ```bash
-    # Replace <source directory> with the directory you extracted the source code to
-    cd <source directory>
-    make pre_build
-    make build
-    sudo make prefix=/usr/local install
-    sudo mkdir /usr/local/lib/openli-provisioner-web/venv
-    sudo chown nobody:nogroup /usr/local/lib/openli-provisioner-web/venv
-    sudo -u nobody make prefix=/usr/local install_venv
-    make clean
+    git clone https://github.com/OpenLI-NZ/openli-provisioner-web.git
+    cd openli-provisioner-web
     ```
-4. Copy configuration templates:
+
+3. Use the provided install script:
     ```bash
-    sudo mkdir -m 700 /etc/openli-provisioner-web
-    sudo cp openli_provisioner_web/config/config.yml /etc/openli-provisioner-web/config.yml
-    sudo chmod u=rw,g=,o= /etc/openli-provisioner-web/config.yml
-    sudo cp contrib/gunicorn.py /etc/openli-provisioner-web/gunicorn.py
-    sudo cp contrib/service.env /etc/openli-provisioner-web/service.env
+    sudo ./scripts/openli-web-provisioner-install-manual.sh
     ```
-5. Create systemd service:
-    ```bash
-    sudo addgroup --system openli-provisioner-web
-    sudo adduser --system --group openli-provisioner-web --shell /usr/sbin/nologin --no-create-home --home /nonexistent
-    sudo chown --recursive openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
-    sudo cp contrib/example.service /etc/systemd/system/openli-provisioner-web.service
-    sudo systemctl daemon-reload
-    ```
-6. Configure `config.yml` (see [Configuration file](#configuration-file))
+
+4. Configure `config.yml` (see [Configuration file](#configuration-file))
    and `gunicorn.py` under `/etc/openli-provisioner-web`.
    It is recommended to set `workers` in `gunicorn.py`
    to the number of logical threads in your system + 1.
    > ***Note:*** In production, it is highly recommended
    to configure a password for the redis server.
-7. Start systemd service:
+
+5. Start systemd service:
     ```bash
     sudo systemctl enable openli-provisioner-web
     sudo systemctl start openli-provisioner-web
+    sudo systemctl restart redis-server
     ```
-8. Configure web server
-   (In this example we use apache2,
+
+6. Configure web server
+   (In this example we use apache2 for Debian/Ubuntu,
    but you can use any web server application
    with a similar configuration):
     ```bash
     sudo cp contrib/apache.conf /etc/apache2/sites-available/openli-provisioner-web.conf
     ```
-    > ***Note:*** Make sure to edit the apache site configuration with the appropriate values
+    > ***Note:*** Make sure to edit the apache site configuration to set the
+    appropriate values for hostnames, listening ports and SSL certificates.
     ```bash
-    sudo a2enmod ssl proxy proxy_http headers
     sudo a2ensite openli-provisioner-web
     sudo systemctl restart apache2
     ```
 
-#### Uninstall
+
+### Uninstall
 
 ```bash
-sudo a2dissite openli-provisioner-web
-sudo rm /etc/apache2/sites-available/openli-provisioner-web.conf
-sudo systemctl reload apache2
-sudo systemctl stop openli-provisioner-web
-sudo systemctl disable openli-provisioner-web
-sudo rm /etc/systemd/system/openli-provisioner-web.service
-sudo systemctl daemon-reload
-sudo rm -r /etc/openli-provisioner-web
-sudo deluser openli-provisioner-web
-sudo make prefix=/usr/local uninstall
+./scripts/openli-provisioner-web-uninstall-manual.sh
 ```
 
 ## Configuration file
