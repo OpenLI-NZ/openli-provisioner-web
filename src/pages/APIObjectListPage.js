@@ -23,7 +23,7 @@ import Message from "../components/Message";
 import Prompt from "../components/Prompt";
 import { APIObjectField } from "../components/APIObject";
 import { useGetRequestJSON, useDeleteRequestJSON } from "../utilities/requests";
-import { fieldLabel, listFields, objectKey, formatAPIData, toAPIObject } from "../utilities/api";
+import { fieldLabel, listFields, objectKey, formatAPIData, toAPIObject, sortAPIObjects } from "../utilities/api";
 import { getErrorMessage } from "../utilities/errors";
 import { pathJoin, deepCopyJSON } from "../utilities/utils";
 
@@ -32,9 +32,10 @@ function APIObjectListPage({title, objectType, path, config}) {
 
     const requestCallback = useCallback((data, _) => {
         if(data) {
+            data = sortAPIObjects(objectType, data);
             setObjects(data);
         }
-    }, [setObjects]);
+    }, [setObjects, objectType]);
     const request = useGetRequestJSON("/" + pathJoin(["api", objectType.api.path]), requestCallback);
     const requestStarted = useRef(false);
 
@@ -137,7 +138,8 @@ function APIObjectListPage({title, objectType, path, config}) {
                                 </tr>
                             </thead>
                             <tbody>
-                                { objects.map((object, index) => {
+                                { 
+                                  objects.map((object, index) => {
                                     const data = formatAPIData(objectType.api.fields, toAPIObject(objectType, deepCopyJSON(object)), true);
                                     return(<APIObjectListItem
                                         key={ objectKey(data, objectType) }

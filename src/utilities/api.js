@@ -24,6 +24,29 @@ import {
 } from "./utils";
 import { valid, validateAPIInput } from "./validation";
 
+function outputhandoversToString(oh_val) {
+    if (oh_val === 0) {
+        return "IRIs and CCs";
+    } else if (oh_val === 1) {
+        return "IRIs only";
+    } else if (oh_val === 2) {
+        return "CCs only";
+    } else {
+        return "Invalid value";
+    }
+}
+
+function stringToOutputhandovers(oh_str) {
+    if (oh_str === "IRIs and CCs") {
+        return 0;
+    } else if (oh_str === "IRIs only") {
+        return 1;
+    } else if (oh_str === "CCs only") {
+        return 2;
+    }
+    return 0;
+}
+
 function objectKey(object, objectType) {
     const delimiter = "key_delimiter" in objectType.api ? objectType.api.key_delimiter : "-";
     const objectKey = [];
@@ -173,13 +196,13 @@ function initialAPIValidationValue(apiField) {
 function formatAPIData(apiFields, data, reverse=false) {
     for(const [key, apiField] of Object.entries(apiFields)) {
         if(key in data) {
-            data[key] = formatAPIDataField(apiField, data[key], reverse);
+            data[key] = formatAPIDataField(key, apiField, data[key], reverse);
         }
     }
     return data;
 }
 
-function formatAPIDataField(apiField, data, reverse=false) {
+function formatAPIDataField(key, apiField, data, reverse=false) {
     if(apiField.type === "dict") {
         if(isDict(data)) {
             return formatAPIData(apiField.fields, data, reverse);
@@ -189,7 +212,8 @@ function formatAPIDataField(apiField, data, reverse=false) {
     } else if(apiField.type === "list") {
         if(isArray(data)) {
             for(const [i, value] of data.entries()) {
-                data[i] = formatAPIDataField(apiField.elements, value, reverse);
+                data[i] = formatAPIDataField(i, apiField.elements, value,
+                        reverse);
             }
             return data;
         } else {
@@ -203,6 +227,12 @@ function formatAPIDataField(apiField, data, reverse=false) {
                 return unixTimestampToDateString(data);
             } else {
                 return dateStringToUnixTimestamp(data);
+            }
+        } else if (key === "outputhandovers") {
+            if(reverse) {
+                return outputhandoversToString(data);
+            } else {
+                return stringToOutputhandovers(data);
             }
         } else {
             return data;
@@ -235,6 +265,23 @@ function toAPIObject(objectType, data) {
     return dict;
 }
 
+function sortAPIObjects(objectType, objects) {
+    if ("key" in objectType.api) {
+        objects.sort((a,b) => {
+            for (const f of objectType.api.key) {
+                if (a[f].toLowerCase() < b[f].toLowerCase()) {
+                    return -1;
+                } else if (a[f].toLowerCase() > b[f].toLowerCase()) {
+                    return 1;
+                }
+            }
+            return 0;
+        });
+    }
+
+    return objects;
+}
+
 export {
     objectKey,
     initialiseAPIData,
@@ -244,5 +291,6 @@ export {
     fieldLabel,
     listFields,
     formatAPIData,
-    toAPIObject
+    toAPIObject,
+    sortAPIObjects
 };

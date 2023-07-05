@@ -32,6 +32,7 @@ routes:
     navigation:
       - ipintercept
       - voipintercept
+      - emailintercept
     routes:
       ipintercept:
         title: IP Intercepts
@@ -71,6 +72,38 @@ routes:
               label: Start time
             - name: endtime
               label: End time
+            - name: outputhandovers
+              label: Output Handovers
+      emailintercept:
+        title: Email Intercepts
+        object:
+          name: emailintercept
+          list_fields:
+            - liid
+            - targets
+          fields:
+            - name: liid
+              label: LIID
+            - name: authcc
+              label: Authorisation country code
+            - name: delivcc
+              label: Delivery country code
+            - name: agencyid
+              label: Agency
+            - name: mediator
+              label: Mediator ID
+            - name: targets
+              label: Target addresses
+              elements:
+                fields:
+                  - name: address
+                    label: Address
+            - name: starttime
+              label: Start time
+            - name: endtime
+              label: End time
+            - name: outputhandovers
+              label: Output Handovers
       voipintercept:
         title: VoIP Intercepts
         object:
@@ -101,12 +134,17 @@ routes:
               label: Start time
             - name: endtime
               label: End time
+            - name: outputhandovers
+              label: Output Handovers
   coreserver:
     title: Core servers
     navigation:
       - radiusserver
       - sipserver
       - gtpserver
+      - smtpserver
+      - imapserver
+      - pop3server
     routes:
       radiusserver:
         title: RADIUS servers
@@ -130,6 +168,33 @@ routes:
         title: GTP servers
         object:
           name: gtpserver
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port
+              label: Port
+      smtpserver:
+        title: SMTP servers
+        object:
+          name: smtpserver
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port
+              label: Port
+      imapserver:
+        title: IMAP servers
+        object:
+          name: imapserver
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port
+              label: Port
+      pop3server:
+        title: POP3 servers
+        object:
+          name: pop3server
           fields:
             - name: ipaddress
               label: IP Address
