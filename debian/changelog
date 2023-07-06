@@ -1,3 +1,12 @@
+openli-provisioner-web (1.1.0-1) unstable; urgency=medium
+
+  * Add ability to configure email intercepts.
+  * Add ability to configure IRI only and CC only intercepts.
+  * Attempt to sort intercepts, agencies or coreservers when we
+    display them as a list.
+
+ -- Shane Alcock <shane@alcock.co.nz>  Thu, 06 Jul 2023 11:57:14 +1200
+
 openli-provisioner-web (1.0.0-1) unstable; urgency=medium
 
   * Initial release.
