@@ -122,6 +122,70 @@ objects:
       endtime:
         type: unix_timestamp
         helptext: "Do not intercept traffic for this user observed after this time -- if not set, the intercept will continue indefinitely."
+      outputhandovers:
+        helptext: "The intercept record types that have been requested for this intercept by the law enforcement agency."
+        type: select
+        choices:
+          - "IRIs and CCs"
+          - "IRIs only"
+          - "CCs only"
+        defaultval: "IRIs and CCs"
+
+  emailintercept:
+    path: /emailintercept
+    key: [liid]
+    methods:
+      - GET
+      - POST
+      - DELETE
+      - PUT
+    fields:
+      liid:
+        required: true
+        type: str
+        helptext: "The Lawful Intercept identifier for this intercept. This is usually provided to you by the LEA when they request the intercept. Must be unique."
+      authcc:
+        required: true
+        type: str
+        helptext: "The two-letter country code for the jurisdiction where the LEA that authorised this intercept is based (e.g. NZ, AU, IN, DE)"
+      delivcc:
+        required: true
+        helptext: "The two-letter country code for the jurisdiction where the LEA that will be receiving this intercept is based (e.g. NZ, AU, IN, DE) -- usually, the same as the Authorisation country code."
+        type: str
+      agencyid:
+        required: true
+        type: agencylist
+        helptext: "The unique identifier of the agency that will be receiving this intercept."
+      mediator:
+        required: true
+        type: int
+        minimum: 0
+        helptext: "The unique identifier of the mediator which will forward the intercept to the agency."
+      targets:
+        required: true
+        type: list
+        elements:
+          type: dict
+          fields:
+            address:
+              required: true
+              type: str
+              helptext: "The email address of the intercept target. You may specify multiple addresses for the same target to cover aliases and other mailboxes that the target owns."
+      starttime:
+        type: unix_timestamp
+        helptext: "Only intercept traffic for this user observed after this time -- if not set, the intercept will begin immediately."
+      endtime:
+        type: unix_timestamp
+        helptext: "Do not intercept traffic for this user observed after this time -- if not set, the intercept will continue indefinitely."
+      outputhandovers:
+        helptext: "The intercept record types that have been requested for this intercept by the law enforcement agency."
+        type: select
+        choices:
+          - "IRIs and CCs"
+          - "IRIs only"
+          - "CCs only"
+        defaultval: "IRIs and CCs"
+
   voipintercept:
     path: /voipintercept
     key: [liid]
@@ -171,6 +235,14 @@ objects:
       endtime:
         type: unix_timestamp
         helptext: "Do not intercept traffic for this user observed after this time -- if not set, the intercept will continue indefinitely."
+      outputhandovers:
+        helptext: "The intercept record types that have been requested for this intercept by the law enforcement agency."
+        type: select
+        choices:
+          - "IRIs and CCs"
+          - "IRIs only"
+          - "CCs only"
+        defaultval: "IRIs and CCs"
   radiusserver:
     path: /radiusserver
     key: [ipaddress, port]
@@ -221,6 +293,57 @@ objects:
       port:
         required: true
         helptext: "The port that the GTP server is listening on."
+        type: port
+  smtpserver:
+    path: /smtpserver
+    key: [ipaddress, port]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+        helptext: "The IP address of the SMTP server."
+      port:
+        required: true
+        helptext: "The port that the SMTP server is listening on."
+        type: port
+  imapserver:
+    path: /imapserver
+    key: [ipaddress, port]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+        helptext: "The IP address of the IMAP server."
+      port:
+        required: true
+        helptext: "The port that the IMAP server is listening on."
+        type: port
+  pop3server:
+    path: /pop3server
+    key: [ipaddress, port]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+        helptext: "The IP address of the POP3 server."
+      port:
+        required: true
+        helptext: "The port that the POP3 server is listening on."
         type: port
   defaultradius:
     path: /defaultradius

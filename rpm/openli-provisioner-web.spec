@@ -1,5 +1,5 @@
 Name:           openli-provisioner-web
-Version:        1.0.0
+Version:        1.1.0
 Release:        1%{?dist}
 Summary:        Web Interface for the OpenLI provisioner
 
@@ -57,6 +57,11 @@ fi
 %{_bindir}/openli-web-provisioner-postupgrade-rpm.sh
 
 %changelog
+* Thu Jul 06 2023 Shane Alcock <shane@alcock.co.nz> - 1.1.0-1
+- Add email intercept support
+- Add outputhandovers config option support
+- Sort lists of intercepts, agencies, etc. by key
+- Fix RPM postinst script failing to copy default config into /etc/
 * Tue Apr 11 2023 Shane Alcock <shane@alcock.co.nz> - 1.0.0-1
 - First RPM release
 
