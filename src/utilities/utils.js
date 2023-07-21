@@ -46,7 +46,9 @@ function dataTrim(data) {
     for(const key of Object.keys(data)) {
         if(data[key] instanceof Object) {
             data[key] = dataTrim(data[key]);
-        } else if(!(data instanceof Array) && !data[key]) {
+        } else if(!(data instanceof Array) &&
+                (!data[key] && data[key] !== "")) {
+            // note: allow empty string as this could be a valid input value
             delete data[key];
         }
     }
