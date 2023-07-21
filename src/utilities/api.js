@@ -47,6 +47,25 @@ function stringToOutputhandovers(oh_str) {
     return 0;
 }
 
+function encryptionMethodToString(em_val) {
+
+    if (em_val === "none") {
+        return "No encryption";
+    } else if (em_val === "aes-192-cbc") {
+        return "AES-192-CBC";
+    }
+    return "Invalid encryption method?"
+}
+
+function stringToEncryptionMethod(em_str) {
+    if (em_str === "No encryption") {
+        return "none";
+    } else if (em_str === "AES-192-CBC") {
+        return "aes-192-cbc";
+    }
+    return "none";
+}
+
 function objectKey(object, objectType) {
     const delimiter = "key_delimiter" in objectType.api ? objectType.api.key_delimiter : "-";
     const objectKey = [];
@@ -132,6 +151,13 @@ function validateAPIData(apiFields, data={}) {
 
             if(!valid) {
                 isValid = false;
+            } else if (key === "encryptionkey") {
+                if (data[key].length === 0 && "payloadencryption" in data) {
+                    if (data["payloadencryption"] != "No encryption") {
+                        isValid = false;
+                        field["feedback"] = "must be set if encryption is enabled";                     field["invalid"] = true;
+                    }
+                }
             }
 
             validation[key] = field;
@@ -233,6 +259,12 @@ function formatAPIDataField(key, apiField, data, reverse=false) {
                 return outputhandoversToString(data);
             } else {
                 return stringToOutputhandovers(data);
+            }
+        } else if (key === "payloadencryption") {
+            if (reverse) {
+                return encryptionMethodToString(data);
+            } else {
+                return stringToEncryptionMethod(data);
             }
         } else {
             return data;

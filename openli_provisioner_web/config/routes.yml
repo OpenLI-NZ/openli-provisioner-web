@@ -74,6 +74,10 @@ routes:
               label: End time
             - name: outputhandovers
               label: Output Handovers
+            - name: payloadencryption
+              label: Encryption Method for CC and IRI content
+            - name: encryptionkey
+              label: Encryption Key
       emailintercept:
         title: Email Intercepts
         object:
@@ -104,6 +108,10 @@ routes:
               label: End time
             - name: outputhandovers
               label: Output Handovers
+            - name: payloadencryption
+              label: Encryption Method for CC and IRI content
+            - name: encryptionkey
+              label: Encryption Key
       voipintercept:
         title: VoIP Intercepts
         object:
@@ -136,6 +144,10 @@ routes:
               label: End time
             - name: outputhandovers
               label: Output Handovers
+            - name: payloadencryption
+              label: Encryption Method for CC and IRI content
+            - name: encryptionkey
+              label: Encryption Key
   coreserver:
     title: Core servers
     navigation:
