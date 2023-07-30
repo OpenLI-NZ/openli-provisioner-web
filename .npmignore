@@ -10,3 +10,7 @@ node_modules
 openli_provisioner_web/build
 build
 .github
+.venv
+*.yaml
+*.yml
+package-lock.json

@@ -130,6 +130,16 @@ objects:
           - "IRIs only"
           - "CCs only"
         defaultval: "IRIs and CCs"
+      payloadencryption:
+        helptext: "Enable encryption of CC and IRI contents using the chosen encryption method."
+        type: select
+        choices:
+         - "No encryption"
+         - "AES-192-CBC"
+        defaultval: "No encryption"
+      encryptionkey:
+        helptext: "Key to use when encrypting CC and IRI contents. Recommended key length is 24 characters."
+        type: str
 
   emailintercept:
     path: /emailintercept
@@ -185,6 +195,16 @@ objects:
           - "IRIs only"
           - "CCs only"
         defaultval: "IRIs and CCs"
+      payloadencryption:
+        helptext: "Enable encryption of CC and IRI contents using the chosen encryption method."
+        type: select
+        choices:
+         - "No encryption"
+         - "AES-192-CBC"
+        defaultval: "No encryption"
+      encryptionkey:
+        helptext: "Key to use when encrypting CC and IRI contents. Recommended key length is 24 characters."
+        type: str
 
   voipintercept:
     path: /voipintercept
@@ -243,6 +263,17 @@ objects:
           - "IRIs only"
           - "CCs only"
         defaultval: "IRIs and CCs"
+      payloadencryption:
+        helptext: "Enable encryption of CC and IRI contents using the chosen encryption method."
+        type: select
+        choices:
+         - "No encryption"
+         - "AES-192-CBC"
+        defaultval: "No encryption"
+      encryptionkey:
+        helptext: "Key to use when encrypting CC and IRI contents. Recommended key length is 24 characters."
+        type: str
+
   radiusserver:
     path: /radiusserver
     key: [ipaddress, port]

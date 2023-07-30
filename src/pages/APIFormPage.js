@@ -352,7 +352,6 @@ function APIFormInput({type, id, label, fieldKey, state}) {
             { ...element.props }
             step="1"/>);
     }
-
     return(
         <>
         { element }
