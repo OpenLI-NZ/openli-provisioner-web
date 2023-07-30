@@ -31,7 +31,7 @@ function APIObjectListPage({title, objectType, path, config}) {
     const [objects, setObjects] = useState(null);
 
     const requestCallback = useCallback((data, _) => {
-        if(data) {
+        if(Array.isArray(data)) {
             data = sortAPIObjects(objectType, data);
             setObjects(data);
         }
