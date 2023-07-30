@@ -1,3 +1,9 @@
+openli-provisioner-web (1.1.1-1) unstable; urgency=medium
+
+  * Add configuration options for payload encryption
+
+ -- Shane Alcock <shane@alcock.co.nz>  Mon, 31 Jul 2023 10:48:51 +1200
+
 openli-provisioner-web (1.1.0-1) unstable; urgency=medium
 
   * Add ability to configure email intercepts.
