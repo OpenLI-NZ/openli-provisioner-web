@@ -47,6 +47,26 @@ function stringToOutputhandovers(oh_str) {
     return 0;
 }
 
+function deliverCompressToString(dc_val) {
+    if (dc_val === "as-is") {
+        return "As is";
+    } else if (dc_val === "inflated" || dc_val === "decompressed") {
+        return "Decompressed";
+    } else if (dc_val === "default") {
+        return "Use default";
+    }
+    return "Use default";
+}
+
+function stringToDeliverCompress(dc_str) {
+    if (dc_str === "As is") {
+        return "as-is";
+    } else if (dc_str === "Decompressed") {
+        return "decompressed";
+    }
+    return "default";
+}
+
 function encryptionMethodToString(em_val) {
 
     if (em_val === "none") {
@@ -153,7 +173,7 @@ function validateAPIData(apiFields, data={}) {
                 isValid = false;
             } else if (key === "encryptionkey") {
                 if (data[key].length === 0 && "payloadencryption" in data) {
-                    if (data["payloadencryption"] != "No encryption") {
+                    if (data["payloadencryption"] !== "No encryption") {
                         isValid = false;
                         field["feedback"] = "must be set if encryption is enabled";                     field["invalid"] = true;
                     }
@@ -265,6 +285,13 @@ function formatAPIDataField(key, apiField, data, reverse=false) {
                 return encryptionMethodToString(data);
             } else {
                 return stringToEncryptionMethod(data);
+            }
+        } else if (key === "delivercompressed" ||
+                    key === "email-defaultdelivercompressed") {
+            if (reverse) {
+                return deliverCompressToString(data);
+            } else {
+                return stringToDeliverCompress(data);
             }
         } else {
             return data;

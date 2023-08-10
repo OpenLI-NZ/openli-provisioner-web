@@ -171,6 +171,12 @@ function unixTimestampToDateString(date) {
 function pathJoin(components) {
     let result = [];
     for(const c of components) {
+        if (c === undefined) {
+            continue;
+        }
+        if (c === null || c === '') {
+            continue;
+        }
         result.push(c.replace(/^\/+/, "").replace(/\/+$/, ""));
     }
     return result.join("/");

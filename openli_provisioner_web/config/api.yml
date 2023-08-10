@@ -205,6 +205,14 @@ objects:
       encryptionkey:
         helptext: "Key to use when encrypting CC and IRI contents. Recommended key length is 24 characters."
         type: str
+      delivercompressed:
+        helptext: "If the email session content is compressed (e.g. using RFC 4978), should the intercepted content be delivered in its original compressed form (i.e. as is) or should OpenLI decompress the content?"
+        type: select
+        choices:
+          - "Use default"
+          - "As is"
+          - "Decompressed"
+        defaultval: "Use default"
 
   voipintercept:
     path: /voipintercept
@@ -389,3 +397,19 @@ objects:
         required: true
         type: text
         helptext: "The username that you want OpenLI to ignore when session tracking because it is a 'default' username that is pre-configured on CPE devices."
+  globaloptions:
+    path: /options
+    key: []
+    methods:
+       - GET
+       - POST
+       - PUT
+    fields:
+      email-defaultdelivercompressed:
+        type: select
+        choices:
+         - "As is"
+         - "Decompressed"
+        defaultval: "As is"
+        helptext: "If email session content is compressed (e.g. using RFC 4978), should the intercepted content be delivered in its original compressed form (i.e. as is) or should OpenLI decompress the content? This option sets the default behaviour, but can be overridden for each individual email intercept if needed."
+

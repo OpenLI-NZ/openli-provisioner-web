@@ -6,6 +6,7 @@ navigation:
   - intercept
   - coreserver
   - defaultradius
+  - globaloptions
 
 routes:
   agency:
@@ -112,6 +113,8 @@ routes:
               label: Encryption Method for CC and IRI content
             - name: encryptionkey
               label: Encryption Key
+            - name: delivercompressed
+              label: Delivery of compressed content
       voipintercept:
         title: VoIP Intercepts
         object:
@@ -219,3 +222,9 @@ routes:
       fields:
         - name: username
           label: Username
+  globaloptions:
+    title: Additional Settings
+    name: globaloptions
+    fields:
+      - name: email-defaultdelivercompressed
+        label: Default email compression delivery method
