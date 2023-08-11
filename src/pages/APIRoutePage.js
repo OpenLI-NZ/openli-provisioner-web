@@ -29,6 +29,8 @@ function APIRoutePage({config}) {
     let routePath = [{path: "/", title: title}];
     let currentPath = "";
     let objectKey = {};
+    let navigation = route.navigation;
+
     if(path !== "/") {
         let pathComponents = path
             .replace(/^\/|\/$/g, "")
@@ -41,6 +43,7 @@ function APIRoutePage({config}) {
                 }
 
                 route = route.routes[c];
+                navigation = route.navigation;
                 title = route.title;
             } else if("object" in route) {
                 const routeObject = route.object;
@@ -80,19 +83,20 @@ function APIRoutePage({config}) {
             <APIGroupPage
                 title={ title }
                 route={ route }
+                config={ config }
                 path={ currentPath }/> }
         { "object" in route &&
             <APIObjectListPage
                 title={ title }
                 key={ route.object.name }
-                objectType={ {"route": route.object, "api": config.api.objects[route.object.name]} }
+                objectType={ {"route": route.object, "api": config.api.objects[route.object.name]}, "navigation": navigation}
                 path={ currentPath }
                 config={ config }/> }
         { "fields" in route &&
             <APIObjectPage
                 title={ title }
                 objectKey={ objectKey }
-                objectType={ {"route": route, "api": config.api.objects[route.name]} }
+                objectType={ {"route": route, "api": config.api.objects[route.name], "navigation": navigation} }
                 path={ currentPath }
                 parentPath={ routePath.at(-2).path }
                 config={ config }/>}

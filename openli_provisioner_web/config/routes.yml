@@ -2,11 +2,12 @@
 title: Home
 
 navigation:
-  - agency
-  - intercept
-  - coreserver
-  - defaultradius
-  - globaloptions
+  - link: agency
+  - link: intercept
+  - link: coreserver
+  - link: defaultradius
+  - link: globaloptions
+    minversion: 1.1.2
 
 routes:
   agency:
@@ -31,9 +32,9 @@ routes:
   intercept:
     title: Intercepts
     navigation:
-      - ipintercept
-      - voipintercept
-      - emailintercept
+      - link: ipintercept
+      - link: voipintercept
+      - link: emailintercept
     routes:
       ipintercept:
         title: IP Intercepts
@@ -154,12 +155,12 @@ routes:
   coreserver:
     title: Core servers
     navigation:
-      - radiusserver
-      - sipserver
-      - gtpserver
-      - smtpserver
-      - imapserver
-      - pop3server
+      - link: radiusserver
+      - link: sipserver
+      - link: gtpserver
+      - link: smtpserver
+      - link: imapserver
+      - link: pop3server
     routes:
       radiusserver:
         title: RADIUS servers

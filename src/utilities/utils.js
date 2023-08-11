@@ -134,6 +134,14 @@ function isStringNumber(v) {
     return !isNaN(Number(v));
 }
 
+function parseNumericString(str) {
+    if (/^\d+$/.test(str)) {
+        return parseInt(str);
+    } else {
+        return NaN;
+    }
+}
+
 function dateStringToUnixTimestamp(date) {
     if(!isString(date)) {
         return date;
@@ -199,6 +207,7 @@ export {
     isBool,
     isStringInt,
     isStringNumber,
+    parseNumericString,
     dateStringToUnixTimestamp,
     unixTimestampToDateString,
     pathJoin

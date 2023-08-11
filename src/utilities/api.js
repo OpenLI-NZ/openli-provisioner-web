@@ -20,6 +20,7 @@ import {
     isArray,
     isDict,
     isString,
+    parseNumericString,
     split
 } from "./utils";
 import { valid, validateAPIInput } from "./validation";
@@ -341,6 +342,35 @@ function sortAPIObjects(objectType, objects) {
     return objects;
 }
 
+function isNavigationAPISupported(minversion, openliversion) {
+
+    if (minversion === undefined || openliversion === undefined) {
+        return true;
+    }
+
+    let minv_parts = minversion.split('.');
+    if (minv_parts.length != 3) {
+        return true;
+    }
+
+    minv_parts[0] = parseNumericString(minv_parts[0]);
+    minv_parts[1] = parseNumericString(minv_parts[1]);
+    minv_parts[2] = parseNumericString(minv_parts[2]);
+
+    if (minv_parts[0] > openliversion.major) {
+        return false;
+    } else if (minv_parts[0] === openliversion.major) {
+        if (minv_parts[1] > openliversion.minor) {
+            return false;
+        } else if (minv_parts[1] === openliversion.minor) {
+            if (minv_parts[2] > openliversion.revision) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 export {
     objectKey,
     initialiseAPIData,
@@ -351,5 +381,6 @@ export {
     listFields,
     formatAPIData,
     toAPIObject,
-    sortAPIObjects
+    sortAPIObjects,
+    isNavigationAPISupported
 };
