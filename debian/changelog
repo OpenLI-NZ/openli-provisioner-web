@@ -1,3 +1,13 @@
+openli-provisioner-web (1.1.2-1) unstable; urgency=medium
+
+  * Add configuration options for email decompression.
+  * Fix bug where reloading a page would just render a blank page.
+  * Add ability to request the running OpenLI version from the
+    provisioner and not display links to pages that would require
+    an API request that version of OpenLI does not support.
+
+ -- Shane Alcock <salcock@searchlight.nz>  Fri, 18 Aug 2023 15:02:39 +1200
+
 openli-provisioner-web (1.1.1-1) unstable; urgency=medium
 
   * Add configuration options for payload encryption

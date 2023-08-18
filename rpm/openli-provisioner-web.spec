@@ -1,5 +1,5 @@
 Name:           openli-provisioner-web
-Version:        1.1.1
+Version:        1.1.2
 Release:        1%{?dist}
 Summary:        Web Interface for the OpenLI provisioner
 
@@ -57,6 +57,11 @@ fi
 %{_bindir}/openli-web-provisioner-postupgrade-rpm.sh
 
 %changelog
+* Fri Aug 18 2023 Shane Alcock <salcock@searchlight.nz> - 1.1.2-1
+- Add support for email decompression config options
+- Fix issue where reloading would display a blank page
+- Hide links to pages where the OpenLI provisioner can not support the requests necessary to display that page's content
+
 * Mon Jul 31 2023 Shane Alcock <shane@alcock.co.nz> - 1.1.1-1
 - Add payload encryption support
 
