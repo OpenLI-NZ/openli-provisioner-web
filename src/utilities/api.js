@@ -349,7 +349,7 @@ function isNavigationAPISupported(minversion, openliversion) {
     }
 
     let minv_parts = minversion.split('.');
-    if (minv_parts.length != 3) {
+    if (minv_parts.length !== 3) {
         return true;
     }
 

@@ -49,14 +49,12 @@ function App() {
     const apiRequest = useGetRequestJSON("/api.json");
     const routesRequest = useGetRequestJSON("/routes.json");
     const configRequest = useGetRequestJSON("/config.json", configCallback);
-    const versionRequest = useGetRequestJSON("/api/openliversion");
 
     const requests = useMemo(() => [
         apiRequest,
         routesRequest,
         configRequest,
-        versionRequest
-    ], [apiRequest, routesRequest, configRequest, versionRequest]);
+    ], [apiRequest, routesRequest, configRequest]);
     const requestsStarted = useRef(false);
 
     useEffect(() => {
@@ -90,7 +88,6 @@ function App() {
             "routes": routesRequest.data,
             "api": apiRequest.data,
             "config": configRequest.data,
-            "openliversion": versionRequest.data
         }
 
         element = <MainPage config={config} setShowLogin={ setShowLogin }/>

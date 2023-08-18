@@ -89,7 +89,7 @@ function APIRoutePage({config}) {
             <APIObjectListPage
                 title={ title }
                 key={ route.object.name }
-                objectType={ {"route": route.object, "api": config.api.objects[route.object.name]}, "navigation": navigation}
+                objectType={ {"route": route.object, "api": config.api.objects[route.object.name], "navigation": navigation} }
                 path={ currentPath }
                 config={ config }/> }
         { "fields" in route &&
