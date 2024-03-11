@@ -36,7 +36,7 @@
     ]
   },
   "description": "Web interface for the OpenLI provisioner.",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -53,5 +53,27 @@
   "bugs": {
     "url": "https://github.com/OpenLI-NZ/openli-provisioner-web/issues"
   },
-  "homepage": "/"
+  "homepage": "https://openli.nz",
+  "files": [
+    "/contrib",
+    "/openli_provisioner_web/app.py",
+    "/openli_provisioner_web/auth.py",
+    "/openli_provisioner_web/config.py",
+    "/openli_provisioner_web/config",
+    "/openli_provisioner_web/logger.py",
+    "/openli_provisioner_web/__init__.py",
+    "/public/index.html",
+    "/scripts/openli-web-provisioner-*.sh",
+    "/src/components/*.js",
+    "/src/pages/*.js",
+    "/src/utilities/*.js",
+    "/src/App.css",
+    "/src/App.js",
+    "/src/index.js",
+    "/LICENSE",
+    "Makefile",
+    "README.md",
+    "package.json",
+    "requirements.txt"
+  ]
 }
