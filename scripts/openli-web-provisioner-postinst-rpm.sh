@@ -2,10 +2,6 @@
 
 cd /usr/local/src/openli-provisioner-web/node_modules/\@openli/openli-provisioner-web/
 
-mkdir -p /usr/local/lib/openli-provisioner-web/venv
-chown nobody:nobody /usr/local/lib/openli-provisioner-web/venv
-sudo -u nobody make prefix=/usr/local install_venv
-
 mkdir -p -m 700 /etc/openli-provisioner-web
 
 if [ ! -f /etc/openli-provisioner-web/config.yml ]; then
@@ -29,8 +25,6 @@ if [ ! -f /etc/httpd/conf.d/openli-provisioner-web.conf ]; then
     cp contrib/apache2/openli-provisioner-web.conf /etc/httpd/conf.d/openli-provisioner-web.conf
 fi
 
-groupadd -f -r openli-provisioner-web || true
-useradd -r -g openli-provisioner-web -s /usr/sbin/nologin -M openli-provisioner-web || true
 chown -R openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
 
 # TODO test on a VM or container that allows systemctl to run
