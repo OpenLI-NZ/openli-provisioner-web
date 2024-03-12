@@ -12,7 +12,11 @@ systemctl disable openli-provisioner-web
 systemctl daemon-reload
 
 echo "Removing react app from ${SPACE}..."
-sudo -u openli-provisioner-web /usr/bin/openli-web-provisioner-remove.sh
+
+if [ -d ${SPACE}/node_modules/\@openli/openli-provisioner-web ]; then
+    cd ${SPACE}/node_modules/\@openli/openli-provisioner-web
+    make prefix=/usr/local uninstall
+fi
 
 rm -rf /etc/openli-provisioner-web
 rm /etc/systemd/system/openli-provisioner-web.service

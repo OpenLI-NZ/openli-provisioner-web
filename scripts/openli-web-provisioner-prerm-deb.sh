@@ -8,4 +8,9 @@ systemctl stop openli-provisioner-web
 systemctl disable openli-provisioner-web
 systemctl daemon-reload
 
-sudo -u openli-provisioner-web /usr/bin/openli-web-provisioner-remove.sh
+SPACE=/usr/local/src/openli-provisioner-web
+
+if [ -d ${SPACE}/node_modules/\@openli/openli-provisioner-web ]; then
+    cd ${SPACE}/node_modules/\@openli/openli-provisioner-web
+    make prefix=/usr/local uninstall
+fi
