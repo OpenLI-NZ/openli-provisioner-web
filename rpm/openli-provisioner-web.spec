@@ -55,6 +55,8 @@ fi
 %{_bindir}/openli-web-provisioner-postinst-rpm.sh
 %{_bindir}/openli-web-provisioner-uninstall-rpm.sh
 %{_bindir}/openli-web-provisioner-postupgrade-rpm.sh
+%{_bindir}/openli-web-provisioner-npm.sh
+%{_bindir}/openli-web-provisioner-remove.sh
 
 %changelog
 * Fri Aug 18 2023 Shane Alcock <salcock@searchlight.nz> - 1.1.2-1
