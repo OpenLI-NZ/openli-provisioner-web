@@ -32,7 +32,7 @@ OpenLI.
 %install
 mkdir -p %{buildroot}/%{_bindir}
 cp -a scripts/*-rpm.sh %{buildroot}/%{_bindir}
-
+cp -a scripts/openli-web-provisioner-npm.sh %{buildroot}/%{_bindir}
 %post
 %{_bindir}/openli-web-provisioner-install-rpm.sh
 
