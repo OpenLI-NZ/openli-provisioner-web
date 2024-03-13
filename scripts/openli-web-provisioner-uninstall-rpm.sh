@@ -6,7 +6,7 @@ rm /etc/httpd/conf.d/openli-provisioner-web.conf
 
 echo "Trying to stop services -- may generate error messages if running"
 echo "in a container..."
-systemctl reload apache2
+systemctl reload httpd
 systemctl stop openli-provisioner-web
 systemctl disable openli-provisioner-web
 systemctl daemon-reload
@@ -16,6 +16,10 @@ echo "Removing react app from ${SPACE}..."
 if [ -d ${SPACE}/node_modules/\@openli/openli-provisioner-web ]; then
     cd ${SPACE}/node_modules/\@openli/openli-provisioner-web
     make prefix=/usr/local uninstall
+fi
+
+if [ -d ${SPACE} ]; then
+    rm -rf ${SPACE}
 fi
 
 rm -rf /etc/openli-provisioner-web
