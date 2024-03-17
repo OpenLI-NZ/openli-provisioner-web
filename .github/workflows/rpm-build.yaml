@@ -16,10 +16,10 @@ jobs:
          arch:
            - amd64
          target:
-           - "rockylinux:8.6"
-           - "rockylinux:9.0"
-           - "fedora:37"
-           - "fedora:36"
+           - "rockylinux:8"
+           - "rockylinux:9"
+           - "fedora:39"
+           - "fedora:38"
 
      steps:
       - name: Checkout repo
@@ -51,10 +51,10 @@ jobs:
          arch:
            - amd64
          target:
-           - "rockylinux:8.6"
-           - "rockylinux:9.0"
-           - "fedora:37"
-           - "fedora:36"
+           - "rockylinux:8"
+           - "rockylinux:9"
+           - "fedora:39"
+           - "fedora:38"
      needs: build
      steps:
        - name: Set environment variables for download
@@ -82,10 +82,10 @@ jobs:
          arch:
            - amd64
          target:
-           - "rockylinux:8.6"
-           - "rockylinux:9.0"
-           - "fedora:37"
-           - "fedora:36"
+           - "rockylinux:8"
+           - "rockylinux:9"
+           - "fedora:39"
+           - "fedora:38"
      needs: test
      steps:
        - name: Set environment variables for download
