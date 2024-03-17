@@ -1,7 +1,6 @@
 #!/bin/bash
 
-addgroup -q --system openli-provisioner-web || true
-adduser -q --system --group openli-provisioner-web || true
+adduser -q --disabled-login --gecos "OpenLI provisioner website" openli-provisioner-web || true
 
 SPACE=/usr/local/src/openli-provisioner-web
 
