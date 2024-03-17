@@ -14,16 +14,16 @@ apt-get install -y equivs devscripts dpkg-dev quilt curl apt-transport-https \
 DISTRO=$(lsb_release -sc)
 
 case ${DISTRO} in
-        bullseye )
-                sed -i 's/ dh-systemd (>=1.5)//' debian/control
-        ;;
-
-        jammy )
-                sed -i 's/ dh-systemd (>=1.5)//' debian/control
+        buster | focal )
+            echo ""
         ;;
 
         bionic )
-                apt-get install -y debhelper -t bionic-backports
+            apt-get install -y debhelper -t bionic-backports
+        ;;
+
+        *)
+            sed -i 's/ dh-systemd (>=1.5)//' debian/control
         ;;
 esac
 
