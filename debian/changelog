@@ -1,3 +1,14 @@
+openli-provisioner-web (1.1.3-1) unstable; urgency=medium
+
+  * Fix missing files in npm package that would prevent the web
+    service from starting.
+  * Use openli-provisioner-web user to run npm, rather than root.
+  * Upgrade from node 14 to node 16.
+  * Fix page error when there are multiple default RADIUS users.
+  * Fix some minor errors in the uninstall script for RPM packages.
+
+ -- Shane Alcock <salcock@searchlight.nz>  Mon, 18 Mar 2024 10:53:19 +1300
+
 openli-provisioner-web (1.1.2-1) unstable; urgency=medium
 
   * Add configuration options for email decompression.

@@ -1,5 +1,5 @@
 Name:           openli-provisioner-web
-Version:        1.1.2
+Version:        1.1.3
 Release:        1%{?dist}
 Summary:        Web Interface for the OpenLI provisioner
 
@@ -58,6 +58,13 @@ fi
 %{_bindir}/openli-web-provisioner-npm.sh
 
 %changelog
+* Mon Mar 18 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.3-1
+- Fix missing files in npm package that would prevent the web service from starting.
+- Use openli-provisioner-web user to run npm, rather than root.
+- Upgrade from node 14 to node 16.
+- Fix page error when there are multiple default RADIUS users.
+- Fix some minor errors in the uninstall script for RPM packages.
+
 * Fri Aug 18 2023 Shane Alcock <salcock@searchlight.nz> - 1.1.2-1
 - Add support for email decompression config options
 - Fix issue where reloading would display a blank page
