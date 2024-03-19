@@ -16,14 +16,14 @@ jobs:
          arch:
            - amd64
          target:
-           - "rockylinux:8.6"
-           - "rockylinux:9.0"
-           - "fedora:37"
-           - "fedora:36"
+           - "rockylinux:8"
+           - "rockylinux:9"
+           - "fedora:39"
+           - "fedora:38"
 
      steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install prereq packages
         run: ./rpmpkg-setup.sh ${{ matrix.target }}
       - name: Build packages
@@ -35,7 +35,7 @@ jobs:
           mkdir -p packages/${DIRNAME}
           cp ~/rpmbuild/RPMS/x86_64/*.rpm packages/${DIRNAME}/
       - name: Store packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: packages-${{ env.DIRNAME }}
           path: packages/${{ env.DIRNAME }}/*.rpm
@@ -51,16 +51,16 @@ jobs:
          arch:
            - amd64
          target:
-           - "rockylinux:8.6"
-           - "rockylinux:9.0"
-           - "fedora:37"
-           - "fedora:36"
+           - "rockylinux:8"
+           - "rockylinux:9"
+           - "fedora:39"
+           - "fedora:38"
      needs: build
      steps:
        - name: Set environment variables for download
          run: echo DIRNAME=${{ matrix.target }} | tr ':' '_' >> $GITHUB_ENV
        - name: Download artifact
-         uses: actions/download-artifact@v3
+         uses: actions/download-artifact@v4
          with:
            name: packages-${{ env.DIRNAME }}
        - name: Test package install
@@ -82,16 +82,16 @@ jobs:
          arch:
            - amd64
          target:
-           - "rockylinux:8.6"
-           - "rockylinux:9.0"
-           - "fedora:37"
-           - "fedora:36"
+           - "rockylinux:8"
+           - "rockylinux:9"
+           - "fedora:39"
+           - "fedora:38"
      needs: test
      steps:
        - name: Set environment variables for download
          run: echo DIRNAME=${{ matrix.target }} | tr ':' '_' >> $GITHUB_ENV
        - name: Download artifact
-         uses: actions/download-artifact@v3
+         uses: actions/download-artifact@v4
          with:
            name: packages-${{ env.DIRNAME }}
        - name: Copy packages

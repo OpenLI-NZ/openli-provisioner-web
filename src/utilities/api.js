@@ -20,6 +20,7 @@ import {
     isArray,
     isDict,
     isString,
+    parseNumericString,
     split
 } from "./utils";
 import { valid, validateAPIInput } from "./validation";
@@ -45,6 +46,26 @@ function stringToOutputhandovers(oh_str) {
         return 2;
     }
     return 0;
+}
+
+function deliverCompressToString(dc_val) {
+    if (dc_val === "as-is") {
+        return "As is";
+    } else if (dc_val === "inflated" || dc_val === "decompressed") {
+        return "Decompressed";
+    } else if (dc_val === "default") {
+        return "Use default";
+    }
+    return "Use default";
+}
+
+function stringToDeliverCompress(dc_str) {
+    if (dc_str === "As is") {
+        return "as-is";
+    } else if (dc_str === "Decompressed") {
+        return "decompressed";
+    }
+    return "default";
 }
 
 function encryptionMethodToString(em_val) {
@@ -153,7 +174,7 @@ function validateAPIData(apiFields, data={}) {
                 isValid = false;
             } else if (key === "encryptionkey") {
                 if (data[key].length === 0 && "payloadencryption" in data) {
-                    if (data["payloadencryption"] != "No encryption") {
+                    if (data["payloadencryption"] !== "No encryption") {
                         isValid = false;
                         field["feedback"] = "must be set if encryption is enabled";                     field["invalid"] = true;
                     }
@@ -266,6 +287,13 @@ function formatAPIDataField(key, apiField, data, reverse=false) {
             } else {
                 return stringToEncryptionMethod(data);
             }
+        } else if (key === "delivercompressed" ||
+                    key === "email-defaultdelivercompressed") {
+            if (reverse) {
+                return deliverCompressToString(data);
+            } else {
+                return stringToDeliverCompress(data);
+            }
         } else {
             return data;
         }
@@ -278,6 +306,7 @@ function toAPIObject(objectType, data) {
     }
 
     const dict = {};
+    const keycount = objectType.api.key.length;
 
     if(isArray(data)) {
         for(const [i, value] of data.entries()) {
@@ -285,21 +314,30 @@ function toAPIObject(objectType, data) {
                 dict[objectType.api.key[i]] = value;
             }
         }
-    } else if(isString(data)) {
+    } else if(isString(data) && keycount > 0) {
         const delimiter = "key_delimiter" in objectType.api ? objectType.api.key_delimiter : "-";
-        for(const [i, value] of split(data, delimiter, objectType.api.key.length - 1).entries()) {
+        for(const [i, value] of split(data, delimiter, keycount - 1).entries()) {
             dict[objectType.api.key[i]] = value;
         }
+    } else if(isString(data)) {
+	// TODO?	
     } else {
-        dict[objectType.api.key[0]] = data;
+	if (objectType.api.key.length > 0) {
+            dict[objectType.api.key[0]] = data;
+	}
     }
-
     return dict;
 }
 
 function sortAPIObjects(objectType, objects) {
-    if ("key" in objectType.api) {
+    if ("key" in objectType.api && objectType.api.key.length !== 0) {
         objects.sort((a,b) => {
+	    /* handle case where the objects are just strings (e.g.
+	     * defaultradius)
+	     */
+	    if (typeof a === 'string' && typeof b === 'string') {
+		return a.localeCompare(b);
+	    }
             for (const f of objectType.api.key) {
                 if (a[f].toLowerCase() < b[f].toLowerCase()) {
                     return -1;
@@ -309,9 +347,53 @@ function sortAPIObjects(objectType, objects) {
             }
             return 0;
         });
+    } else {
+	objects.sort((a,b) => {
+	    if (typeof a === 'string' && typeof b === 'string') {
+		return a.localeCompare(b);
+	    }
+	    if (typeof a === 'number' && typeof b === 'number') {
+		return a - b;
+	    }
+	    if (typeof a === 'number') {
+		return -1;
+	    }
+	    if (typeof b === 'string') {
+		return 1;
+	    }
+	    return 0;
+	});
+    }
+    return objects;
+}
+
+function isNavigationAPISupported(minversion, openliversion) {
+
+    if (minversion === undefined || openliversion === undefined) {
+        return true;
     }
 
-    return objects;
+    let minv_parts = minversion.split('.');
+    if (minv_parts.length !== 3) {
+        return true;
+    }
+
+    minv_parts[0] = parseNumericString(minv_parts[0]);
+    minv_parts[1] = parseNumericString(minv_parts[1]);
+    minv_parts[2] = parseNumericString(minv_parts[2]);
+
+    if (minv_parts[0] > openliversion.major) {
+        return false;
+    } else if (minv_parts[0] === openliversion.major) {
+        if (minv_parts[1] > openliversion.minor) {
+            return false;
+        } else if (minv_parts[1] === openliversion.minor) {
+            if (minv_parts[2] > openliversion.revision) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 export {
@@ -324,5 +406,6 @@ export {
     listFields,
     formatAPIData,
     toAPIObject,
-    sortAPIObjects
+    sortAPIObjects,
+    isNavigationAPISupported
 };

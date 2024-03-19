@@ -15,13 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Link } from "react-router-dom";
+import { isNavigationAPISupported } from "../utilities/api"
 
-function NavigationAPIRoute({route, path="", activePath="", depth=0}) {
+function NavigationAPIRoute({route, openliversion, path="", activePath="", depth=0}) {
     return(
         <>
         { route.navigation.map((link, index) => {
-            const linkPath = `${path}/${link}`;
-            const linkRoute = route.routes[link];
+            const linkPath = `${path}/${link.link}`;
+            const linkRoute = route.routes[link.link];
+            if (! isNavigationAPISupported(link.minversion, openliversion)) {
+                return (<> </>);
+            }
 
             let text = <>{ linkRoute.title }</>;
             if(depth === 0) {
@@ -45,6 +49,7 @@ function NavigationAPIRoute({route, path="", activePath="", depth=0}) {
             </Link>
             { "navigation" in linkRoute && <NavigationAPIRoute
                 route={ linkRoute }
+                openliversion = { openliversion }
                 path={ linkPath }
                 activePath={ activePath }
                 depth={ depth + 1 }/> }

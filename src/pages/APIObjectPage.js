@@ -31,7 +31,8 @@ function APIObjectPage({title, objectKey, objectType, path, parentPath, config})
     const apiPath = "/" + pathJoin([
         "api",
         objectType.api.path,
-        encodeURIComponent(objectKey[objectType.route.name])
+        objectKey[objectType.route.name] !== undefined ?
+            encodeURIComponent(objectKey[objectType.route.name]) : ''
     ]);
     const request = useGetRequestJSON(apiPath);
     const requestStarted = useRef(false);

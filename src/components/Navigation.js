@@ -56,6 +56,7 @@ function Navigation({config, setShowLogin}) {
             setShowLogin(true);
         }
     }, [setShowLogin]);
+
     const logoutRequest = usePostRequestJSON("/api_logout", callback);
 
     return(
@@ -71,7 +72,7 @@ function Navigation({config, setShowLogin}) {
             </div>
 
             <Nav className="d-flex flex-column h-100" style={{overflow: "auto"}}>
-                <NavigationAPIRoute route={ config.routes } activePath={ activePath }/>
+                <NavigationAPIRoute route={ config.routes } openliversion={ config.openliversion } activePath = { activePath }/>
             </Nav>
 
             { config.config.api_auth_enabled && <div className="sidenav-footer">

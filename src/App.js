@@ -49,10 +49,11 @@ function App() {
     const apiRequest = useGetRequestJSON("/api.json");
     const routesRequest = useGetRequestJSON("/routes.json");
     const configRequest = useGetRequestJSON("/config.json", configCallback);
+
     const requests = useMemo(() => [
         apiRequest,
         routesRequest,
-        configRequest
+        configRequest,
     ], [apiRequest, routesRequest, configRequest]);
     const requestsStarted = useRef(false);
 
@@ -86,7 +87,7 @@ function App() {
         const config = {
             "routes": routesRequest.data,
             "api": apiRequest.data,
-            "config": configRequest.data
+            "config": configRequest.data,
         }
 
         element = <MainPage config={config} setShowLogin={ setShowLogin }/>

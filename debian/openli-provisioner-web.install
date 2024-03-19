@@ -1,4 +1,5 @@
 scripts/*-deb.sh usr/bin/
+scripts/*-npm.sh usr/bin/
 openli_provisioner_web/config/config.yml etc/openli-provisioner-web/
 contrib/gunicorn.py etc/openli-provisioner-web/
 contrib/service.env etc/openli-provisioner-web/

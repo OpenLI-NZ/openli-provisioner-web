@@ -15,15 +15,22 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Link } from "react-router-dom";
+import { isNavigationAPISupported } from "../utilities/api"
 
-function APIGroupPage({title, route, path=""}) {
+function APIGroupPage({title, route, config, path=""}) {
     return(
         <>
         <h1>{ title }</h1>
         <ul>
-            { route.navigation.map((link) => (
-                <li><Link to={ `${path}/${link}` }>{ route.routes[link].title }</Link></li>
-            ))}
+            { route.navigation.map((link) => {
+                if (isNavigationAPISupported(link.minversion,
+                        config.openliversion)) {
+
+                    return(<li><Link to={ `${path}/${link.link}` }>{ route.routes[link.link].title }</Link></li>);
+                } else {
+                    return (<></>);
+                }
+            })}
         </ul>
         </>
     )

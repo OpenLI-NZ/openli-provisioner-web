@@ -2,43 +2,27 @@
 
 SPACE=/usr/local/src/openli-provisioner-web
 
-mkdir -p ${SPACE}
-cd ${SPACE}
-
-if ! nvm --version &> /dev/null; then
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-fi
-
-nvm install 14
-nvm use 14
-
-npm i @openli/openli-provisioner-web
-cd node_modules/\@openli/openli-provisioner-web
-
-make pre_build
-make build
-make prefix=/usr/local install
-make clean
-
-mkdir -p /usr/local/lib/openli-provisioner-web/venv
-
-if getent group nogroup > /dev/null; then
-        chown nobody:nogroup /usr/local/lib/openli-provisioner-web/venv
-else
-        chown nobody:nobody /usr/local/lib/openli-provisioner-web/venv
-fi
-
-sudo -u nobody make prefix=/usr/local install_venv
-
 if which addgroup > /dev/null; then
     addgroup -q --system openli-provisioner-web || true
 else
     groupadd -f -r openli-provisioner-web || true
 fi
 
-useradd -r -g openli-provisioner-web -s /usr/sbin/nologin -M openli-provisioner-web || true
+useradd -r -m -g openli-provisioner-web openli-provisioner-web || true
+
+mkdir -p ${SPACE}
+chown openli-provisioner-web:openli-provisioner-web ${SPACE}
+
+mkdir -p /usr/local/lib/openli-provisioner-web/venv
+chown openli-provisioner-web:openli-provisioner-web /usr/local/lib/openli-provisioner-web/venv
+
+sudo -u openli-provisioner-web /usr/bin/openli-web-provisioner-npm.sh
+
+cd ${SPACE}/node_modules/\@openli/openli-provisioner-web
+
+make prefix=/usr/local install
+make clean
+make prefix=/usr/local install_venv
 
 mkdir -p -m 700 /etc/openli-provisioner-web
 

@@ -102,7 +102,7 @@ Configuration is provided by a YAML file located at either:
 
 ### Requirements
 
-* nodejs >= 14.0.0
+* nodejs >= 16.0.0
   > ***Note:*** If newer versions are not available on your
   distribution, install nodejs via
   https://nodejs.org/en/download/package-manager/

@@ -12,5 +12,4 @@ build
 .github
 .venv
 *.yaml
-*.yml
 package-lock.json

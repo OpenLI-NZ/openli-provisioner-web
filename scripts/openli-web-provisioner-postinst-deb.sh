@@ -1,7 +1,5 @@
 #!/bin/bash
 
-addgroup -q --system openli-provisioner-web || true
-adduser -q --system --group openli-provisioner-web --shell /usr/sbin/nologin --no-create-home --home /nonexistent || true
 chown --recursive openli-provisioner-web:openli-provisioner-web /etc/openli-provisioner-web
 
 echo "Starting base services -- may print errors if you are installing"

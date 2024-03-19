@@ -2,10 +2,12 @@
 title: Home
 
 navigation:
-  - agency
-  - intercept
-  - coreserver
-  - defaultradius
+  - link: agency
+  - link: intercept
+  - link: coreserver
+  - link: defaultradius
+  - link: globaloptions
+    minversion: 1.1.2
 
 routes:
   agency:
@@ -30,9 +32,9 @@ routes:
   intercept:
     title: Intercepts
     navigation:
-      - ipintercept
-      - voipintercept
-      - emailintercept
+      - link: ipintercept
+      - link: voipintercept
+      - link: emailintercept
     routes:
       ipintercept:
         title: IP Intercepts
@@ -112,6 +114,8 @@ routes:
               label: Encryption Method for CC and IRI content
             - name: encryptionkey
               label: Encryption Key
+            - name: delivercompressed
+              label: Delivery of compressed content
       voipintercept:
         title: VoIP Intercepts
         object:
@@ -151,12 +155,12 @@ routes:
   coreserver:
     title: Core servers
     navigation:
-      - radiusserver
-      - sipserver
-      - gtpserver
-      - smtpserver
-      - imapserver
-      - pop3server
+      - link: radiusserver
+      - link: sipserver
+      - link: gtpserver
+      - link: smtpserver
+      - link: imapserver
+      - link: pop3server
     routes:
       radiusserver:
         title: RADIUS servers
@@ -219,3 +223,9 @@ routes:
       fields:
         - name: username
           label: Username
+  globaloptions:
+    title: Additional Settings
+    name: globaloptions
+    fields:
+      - name: email-defaultdelivercompressed
+        label: Default email compression delivery method

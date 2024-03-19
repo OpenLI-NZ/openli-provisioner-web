@@ -17,8 +17,52 @@
 import { Col, Container, Row } from "react-bootstrap";
 import APIRoutePage from "./APIRoutePage";
 import Navigation from "../components/Navigation";
+import { useGetRequestJSON } from "../utilities/requests";
+import { useEffect, useRef, useMemo } from "react";
+import LoadingPage from "./LoadingPage";
+import { any, all, getFirst } from "../utilities/utils";
+
 
 function MainPage({config, setShowLogin}) {
+    const versionRequest = useGetRequestJSON("/api/openliversion");
+
+    const requests = useMemo(() => [
+        versionRequest
+    ], [versionRequest]);
+    const requestsStarted = useRef(false);
+
+    useEffect(() => {
+        if(any(requests, request => request.error)) {
+            for (const request of requests) {
+                request.cancel();
+            }
+        } else if(!requestsStarted.current) {
+            for(const request of requests) {
+                request.start();
+            }
+            requestsStarted.current = true;
+        }
+    }, [requests]);
+
+    if(any(requests, request => request.isLoading)) {
+        return <LoadingPage isLoading={ true } message="Fetching configuration..."/>
+    } else if (any(requests, request => request.error)) {
+        if (versionRequest.error) {
+            // provisioner may pre-date the version endpoint, so just
+            // assume 1.1.1 was the version
+            config["openliversion"] = {
+                "major": 1, "minor": 1, "revision": 1, "fullversion": "1.1.1"
+            }
+        } else {
+                return <LoadingPage error={ getFirst(requests,
+                        request => request.error) }/>
+        }
+    } else if(all(requests, request => request.data)) {
+        config["openliversion"] = versionRequest.data;
+    } else {
+        return <LoadingPage/>
+    }
+
     return(
         <Container fluid>
             <Row className="h-100">
