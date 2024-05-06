@@ -108,7 +108,7 @@ jobs:
            mkdir -p packages/${DIRNAME}
            find . -name "*.deb" | xargs cp -t packages/${DIRNAME}/
        - name: Publish package to cloudsmith
-         uses: wanduow/action-cloudsmith-upload-packages@v1
+         uses: salcock/action-cloudsmith-upload-packages@v1.8
          with:
            path: packages/
            repo: ${{ secrets.CLOUDSMITH_OWNER }}/openli
