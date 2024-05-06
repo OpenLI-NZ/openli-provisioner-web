@@ -256,6 +256,7 @@ objects:
               helptext: "The SIP username for the intercept target. A leading '*' may be used as a wildcard to match any extra leading digits or characters (e.g. area or international dialing codes in front of a phone number)."
             realm:
               type: str
+              dropblank: true
               helptext: "The host, domain, or realm portion of the SIP identifier for the intercept target. If not set, all realms will be considered as valid for this target."
       starttime:
         type: unix_timestamp

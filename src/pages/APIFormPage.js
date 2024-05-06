@@ -462,7 +462,7 @@ function APIFormList({field, fieldKey, state}) {
 
 function prepareData(state) {
     let result = deepCopyJSON(state.data);
-    result = dataTrim(result);
+    result = dataTrim(state.objectType.api.fields, result);
     result = formatAPIData(state.objectType.api.fields, result);
     return result;
 }
@@ -477,7 +477,8 @@ function handleChange(event, fieldKey, state) {
 function handleSubmit(event, state) {
     event.preventDefault();
 
-    const [isValid, validation] = validateAPIData(state.objectType.api.fields, state.data);
+    const [isValid, validation] = validateAPIData(state.objectType.api.fields,
+            state.data);
 
     state.setValidation(validation);
 

@@ -1,5 +1,5 @@
 Name:           openli-provisioner-web
-Version:        1.1.3
+Version:        1.1.4
 Release:        1%{?dist}
 Summary:        Web Interface for the OpenLI provisioner
 
@@ -58,6 +58,9 @@ fi
 %{_bindir}/openli-web-provisioner-npm.sh
 
 %changelog
+* Mon May 6 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.4-1
+- Fix bug where a blank realm for a SIP target would not behave as a wildcard.
+
 * Mon Mar 18 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.3-1
 - Fix missing files in npm package that would prevent the web service from starting.
 - Use openli-provisioner-web user to run npm, rather than root.

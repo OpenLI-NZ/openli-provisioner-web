@@ -42,15 +42,37 @@ function dataSet(d, key, value) {
     return d;
 }
 
-function dataTrim(data) {
-    for(const key of Object.keys(data)) {
-        if(data[key] instanceof Object) {
-            data[key] = dataTrim(data[key]);
-        } else if(!(data instanceof Array) &&
-                (!data[key] && data[key] !== "")) {
-            // note: allow empty string as this could be a valid input value
+function dataTrimInner(apiField, data, key) {
+
+    if (apiField.type === "dict") {
+        if (isDict(data[key])) {
+            data[key] = dataTrim(apiField.fields, data[key]);
+        }
+    } else if (apiField.type === "list") {
+        if (isArray(data[key])) {
+            for (const [i,value] of data[key].entries()) {
+                dataTrimInner(apiField.elements, data[key], i);
+            }
+            if (data[key].length === 0) {
+                delete data[key];
+            }
+        }
+    } else if (!(data[key] instanceof Array)) {
+        if (!data[key] && data[key] !== "") {
+            delete data[key];
+        } else if (data[key] === "" && apiField.dropblank) {
             delete data[key];
         }
+    }
+}
+
+function dataTrim(apiFields, data) {
+    for (const [key, apiField] of Object.entries(apiFields)) {
+        if (! data.hasOwnProperty(key) ) {
+            continue;
+        }
+
+        dataTrimInner(apiField, data, key);
     }
     return data;
 }
