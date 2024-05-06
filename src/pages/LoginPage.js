@@ -174,7 +174,7 @@ function prepareData(state) {
         result["ha1"] = md5(`${data.username}:provisioner@openli.nz:${data.password}`).toString();
     }
 
-    result = dataTrim(result);
+    //result = dataTrim(result);
     return result;
 }
 
