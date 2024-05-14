@@ -1,5 +1,5 @@
 Name:           openli-provisioner-web
-Version:        1.1.4
+Version:        1.1.5
 Release:        1%{?dist}
 Summary:        Web Interface for the OpenLI provisioner
 
@@ -58,6 +58,10 @@ fi
 %{_bindir}/openli-web-provisioner-npm.sh
 
 %changelog
+* Tue May 14 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.5-1
+- Fix bug where editing intercepts would result in the agency being reset
+  to the "default" agency.
+
 * Mon May 6 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.4-1
 - Fix bug where a blank realm for a SIP target would not behave as a wildcard.
 

@@ -1,3 +1,11 @@
+openli-provisioner-web (1.1.5-1) unstable; urgency=medium
+
+  * Fix bug where the agency dropdown would always be initially
+    set to the "default" agency when editing an intercept, rather than
+    the actual agency that was configured for that intercept.
+
+ -- Shane Alcock <salcock@searchlight.nz>  Tue, 14 May 2024 14:31:19 +1200
+
 openli-provisioner-web (1.1.4-1) unstable; urgency=medium
 
   * Fix bug where a blank realm for a SIP target would not be treated as a
