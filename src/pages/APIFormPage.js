@@ -268,11 +268,15 @@ function APIFormAgencyList({id, field, label, fieldKey, state}) {
     const requestCallback = useCallback((data, _) => {
         if (data) {
             setAgencies(data);
-            setDefaultValue(data[0].agencyid);
-            dataSet(state.data, fieldKey, data[0].agencyid);
+            if (!value) {
+                setDefaultValue(data[0].agencyid);
+                dataSet(state.data, fieldKey, data[0].agencyid);
+            } else {
+                dataSet(state.data, fieldKey, value);
+            }
             state.setData(state.data);
         }
-    }, [setAgencies, fieldKey, state]);
+    }, [setAgencies, fieldKey, state, value]);
 
     const request = useGetRequestJSON("/" + pathJoin(["api", "/agency"]), requestCallback);
     const requestStarted = useRef(false);
@@ -289,7 +293,7 @@ function APIFormAgencyList({id, field, label, fieldKey, state}) {
     let element = (<Form.Select
         type={ "text" }
         id={ id }
-        defaultValue={ value ? value : defaultValue }
+        value={ value ? value: defaultValue }
         onChange={ (event) => handleChange(event, fieldKey, state) }
         disabled={ disabled }
         isInvalid={ validation.invalid }
