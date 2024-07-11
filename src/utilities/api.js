@@ -169,7 +169,6 @@ function validateAPIData(apiFields, data={}) {
     for(const [key, apiField] of Object.entries(apiFields)) {
         if(key in data) {
             const [valid, field] = validateAPIField(apiField, data[key]);
-
             if(!valid) {
                 isValid = false;
             } else if (key === "encryptionkey") {
@@ -179,8 +178,15 @@ function validateAPIData(apiFields, data={}) {
                         field["feedback"] = "must be set if encryption is enabled";                     field["invalid"] = true;
                     }
                 }
+            } else if (key === "mobileident") {
+                if (data[key] === "Undetermined" && "accesstype" in data) {
+                    if (data["accesstype"] === "mobile") {
+                        isValid = false;
+                        field["feedback"] = "must be set to a valid identifier type for mobile intercepts";
+                        field["invalid"] = true;
+                    }
+                }
             }
-
             validation[key] = field;
         } else {
             validation[key] = initialAPIValidationValue(apiField);
@@ -243,6 +249,15 @@ function initialAPIValidationValue(apiField) {
 function formatAPIData(apiFields, data, reverse=false) {
     for(const [key, apiField] of Object.entries(apiFields)) {
         if(key in data) {
+            if ( key === "mobileident" ) {
+                if ( "accesstype" in data ) {
+                    if (data["accesstype"] !== "mobile") {
+                        continue;
+                    }
+                } else {
+                    continue;
+                }
+            }
             data[key] = formatAPIDataField(key, apiField, data[key], reverse);
         }
     }

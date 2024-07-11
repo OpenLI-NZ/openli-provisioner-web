@@ -226,14 +226,21 @@ function APIFormFields({fields, fieldKey=[], state}) {
 }
 
 function APIFormSelect({id, field, label, fieldKey, state}) {
-    const value = dataGet(state.data, fieldKey);
     const validation = dataGet(state.validation, fieldKey);
     const options = field.api.choices.map(
             opt => <option key={opt} value={opt}>{opt}</option>);
 
-    const disabled = (state.method === "PUT" &&
+    let value = dataGet(state.data, fieldKey);
+    let disabled = (state.method === "PUT" &&
         state.objectType.api.key.includes(fieldKey[0])) ||
         state.request.isLoading;
+
+    if (fieldKey.includes("mobileident")) {
+        if ("accesstype" in state.data && state.data["accesstype"] !== "mobile")
+        {
+            disabled = true;
+        }
+    }
 
     let element = (<Form.Select
         type={ "text" }

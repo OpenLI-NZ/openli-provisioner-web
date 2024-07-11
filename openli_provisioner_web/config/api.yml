@@ -72,7 +72,16 @@ objects:
       user:
         required: true
         type: str
-        helptext: "The AAA username for the intercept target (e.g. their username in RADIUS)."
+        helptext: "The identity of the intercept target (e.g. their username in RADIUS, or their MSISDN for mobile users)."
+      mobileident:
+        type: select
+        choices:
+          - "Undetermined"
+          - "MSISDN"
+          - "IMSI"
+          - "IMEI"
+        defaultval: "Undetermined"
+        helptext: "The type of identifier that has been specified in the 'user' field (applies to mobile intercepts only)."
       accesstype:
         type: select
         choices:
