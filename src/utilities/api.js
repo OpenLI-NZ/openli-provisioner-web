@@ -162,13 +162,14 @@ function initialAPIDataValue(apiField) {
     }
 }
 
-function validateAPIData(apiFields, data={}) {
+function validateAPIData(apiFields, data={}, config) {
     let isValid = true;
     const validation = {};
 
     for(const [key, apiField] of Object.entries(apiFields)) {
-        if(key in data) {
-            const [valid, field] = validateAPIField(apiField, data[key]);
+        if(key in data && isNavigationAPISupported(apiField.minversion,
+                config.openliversion)) {
+            const [valid, field] = validateAPIField(apiField, data[key], config);
             if(!valid) {
                 isValid = false;
             } else if (key === "encryptionkey") {
@@ -196,10 +197,10 @@ function validateAPIData(apiFields, data={}) {
     return [isValid, validation];
 }
 
-function validateAPIField(apiField, data) {
+function validateAPIField(apiField, data, config) {
     if(apiField.type === "dict") {
         if(isDict(data)) {
-            return validateAPIData(apiField.fields, data);
+            return validateAPIData(apiField.fields, data, config);
         } else {
             return [true, initialAPIValidationValue(apiField)];
         }
@@ -209,7 +210,7 @@ function validateAPIField(apiField, data) {
             const validation = [];
 
             for(const value of data) {
-                const [valid, field] = validateAPIField(apiField.elements, value);
+                const [valid, field] = validateAPIField(apiField.elements, value, config);
 
                 if(!valid) {
                     isValid = false;
@@ -249,6 +250,7 @@ function initialAPIValidationValue(apiField) {
 function formatAPIData(apiFields, data, reverse=false) {
     for(const [key, apiField] of Object.entries(apiFields)) {
         if(key in data) {
+            let outputkey = key;
             if ( key === "mobileident" ) {
                 if ( "accesstype" in data ) {
                     if (data["accesstype"] !== "mobile") {
@@ -258,7 +260,9 @@ function formatAPIData(apiFields, data, reverse=false) {
                     continue;
                 }
             }
-            data[key] = formatAPIDataField(key, apiField, data[key], reverse);
+
+            data[outputkey] = formatAPIDataField(key, apiField,
+                    data[key], reverse);
         }
     }
     return data;
@@ -345,15 +349,57 @@ function toAPIObject(objectType, data) {
 }
 
 function sortAPIObjects(objectType, objects) {
+    /* filter out objects that do not contain all the required key
+     * fields
+     */
+
+    /* but in the case of coreservers that are defined using a single
+     * port number (i.e. legacy mode), we can convert the port entry into
+     * lower and upper fields that have the same value...
+     */
+    const coreserverRoutes = ["sipserver"];  // TODO add other server types
+    let filtered = [];
+    for (const obj of objects) {
+        let ok = true;
+
+        if (coreserverRoutes.includes(objectType.route.name)) {
+            if (obj["port"] !== undefined && (obj["port_upper"] === undefined
+                    && obj["port_lower"] === undefined)) {
+                obj["port_lower"] = obj["port"];
+                obj["port_upper"] = obj["port"];
+            }
+        }
+
+        for (const f of objectType.api.key) {
+            if (obj[f] === undefined) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) {
+            filtered.push(obj);
+        }
+    }
+    objects = filtered;
+
     if ("key" in objectType.api && objectType.api.key.length !== 0) {
         objects.sort((a,b) => {
-	    /* handle case where the objects are just strings (e.g.
-	     * defaultradius)
-	     */
-	    if (typeof a === 'string' && typeof b === 'string') {
-		return a.localeCompare(b);
-	    }
+	        /* handle case where the objects are just strings (e.g.
+	         * defaultradius)
+	        */
+    	    if (typeof a === 'string' && typeof b === 'string') {
+    		    return a.localeCompare(b);
+	        }
+
             for (const f of objectType.api.key) {
+                if (a[f] === undefined && b[f] !== undefined) {
+                    return 1;
+                } else if (a[f] !== undefined && b[f] === undefined) {
+                    return -1;
+                } else if (a[f] === undefined && b[f] === undefined) {
+                    return 0;
+                }
+
                 if (a[f].toLowerCase() < b[f].toLowerCase()) {
                     return -1;
                 } else if (a[f].toLowerCase() > b[f].toLowerCase()) {
@@ -382,32 +428,55 @@ function sortAPIObjects(objectType, objects) {
     return objects;
 }
 
-function isNavigationAPISupported(minversion, openliversion) {
+function isNavigationAPISupported(minversion, openliversion, maxversion) {
 
-    if (minversion === undefined || openliversion === undefined) {
+    if ((minversion === undefined && maxversion === undefined) ||
+            openliversion === undefined) {
         return true;
     }
 
-    let minv_parts = minversion.split('.');
-    if (minv_parts.length !== 3) {
-        return true;
-    }
+    if (minversion !== undefined) {
+        let minv_parts = minversion.split('.');
+        if (minv_parts.length === 3) {
+            minv_parts[0] = parseNumericString(minv_parts[0]);
+            minv_parts[1] = parseNumericString(minv_parts[1]);
+            minv_parts[2] = parseNumericString(minv_parts[2]);
 
-    minv_parts[0] = parseNumericString(minv_parts[0]);
-    minv_parts[1] = parseNumericString(minv_parts[1]);
-    minv_parts[2] = parseNumericString(minv_parts[2]);
-
-    if (minv_parts[0] > openliversion.major) {
-        return false;
-    } else if (minv_parts[0] === openliversion.major) {
-        if (minv_parts[1] > openliversion.minor) {
-            return false;
-        } else if (minv_parts[1] === openliversion.minor) {
-            if (minv_parts[2] > openliversion.revision) {
+            if (minv_parts[0] > openliversion.major) {
                 return false;
+            } else if (minv_parts[0] === openliversion.major) {
+                if (minv_parts[1] > openliversion.minor) {
+                    return false;
+                } else if (minv_parts[1] === openliversion.minor) {
+                    if (minv_parts[2] > openliversion.revision) {
+                        return false;
+                    }
+                }
             }
         }
     }
+
+    if (maxversion !== undefined) {
+        let maxv_parts = maxversion.split('.');
+        if (maxv_parts.length === 3) {
+            maxv_parts[0] = parseNumericString(maxv_parts[0]);
+            maxv_parts[1] = parseNumericString(maxv_parts[1]);
+            maxv_parts[2] = parseNumericString(maxv_parts[2]);
+
+            if (maxv_parts[0] < openliversion.major) {
+                return false;
+            } else if (maxv_parts[0] === openliversion.major) {
+                if (maxv_parts[1] < openliversion.minor) {
+                    return false;
+                } else if (maxv_parts[1] === openliversion.minor) {
+                    if (maxv_parts[2] < openliversion.revision) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
     return true;
 }
 

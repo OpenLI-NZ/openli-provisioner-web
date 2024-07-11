@@ -75,6 +75,7 @@ objects:
         helptext: "The identity of the intercept target (e.g. their username in RADIUS, or their MSISDN for mobile users)."
       mobileident:
         type: select
+        minversion: 1.1.6
         choices:
           - "Undetermined"
           - "MSISDN"
@@ -101,6 +102,7 @@ objects:
         helptext: "The type of Internet connection provided to the intercept target."
       vendmirrorid:
         type: int
+        dropblank: true
         helptext: "The intercept ID assigned to the packets emitted by a mirroring platform (such as JMirror or ALU mirroring) for the target user. Only set this option if you are using a vendor mirroring feature to redirect target traffic into OpenLI."
       radiusident:
         type: select
@@ -309,7 +311,30 @@ objects:
         required: true
         helptext: "The port that the RADIUS server is listening on (don't forget to add both the Accounting and Auth ports!)"
         type: port
+
   sipserver:
+    path: /sipserver
+    key: [ipaddress, port_lower, port_upper]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+        helptext: "The IP address of the SIP server."
+      port_lower:
+        required: true
+        helptext: "The lowest port in the port range that the SIP server is listening on."
+        type: port
+      port_upper:
+        required: true
+        helptext: "The highest port in the port range that the SIP server is listening on."
+        type: port
+
+  sipserver_legacy:
     path: /sipserver
     key: [ipaddress, port]
     methods:

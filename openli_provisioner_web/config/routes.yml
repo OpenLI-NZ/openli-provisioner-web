@@ -158,7 +158,10 @@ routes:
     title: Core servers
     navigation:
       - link: radiusserver
+      - link: sipserver_legacy
+        maxversion: 1.1.6
       - link: sipserver
+        minversion: 1.1.6
       - link: gtpserver
       - link: smtpserver
       - link: imapserver
@@ -173,15 +176,27 @@ routes:
               label: IP Address
             - name: port
               label: Port
-      sipserver:
+      sipserver_legacy:
         title: SIP servers
         object:
-          name: sipserver
+          name: sipserver_legacy
           fields:
             - name: ipaddress
               label: IP Address
             - name: port
               label: Port
+      sipserver:
+        title: SIP servers (2)
+        object:
+          name: sipserver
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port_lower
+              label: Minimum Port Number
+            - name: port_upper
+              label: Maximum Port Number
+
       gtpserver:
         title: GTP servers
         object:
