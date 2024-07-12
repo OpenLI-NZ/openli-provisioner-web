@@ -1,4 +1,4 @@
-flask=2.2.5
+flask==2.2.5
 Flask-Session
 jsonschema
 pyyaml
