@@ -1,5 +1,5 @@
 Name:           openli-provisioner-web
-Version:        1.1.5
+Version:        1.1.6
 Release:        1%{?dist}
 Summary:        Web Interface for the OpenLI provisioner
 
@@ -58,6 +58,12 @@ fi
 %{_bindir}/openli-web-provisioner-npm.sh
 
 %changelog
+* Fri Jul 12 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.6-1
+- Add support for specifying port ranges when configuring SIP and RADIUS servers (requires openli-provisioner 1.1.6).
+- Add support for the "mobileident" parameter for mobile IP intercepts (requires openli-provisioner 1.1.6).
+- Fix glitches when editing an intercept with a vendor mirror ID that is either blank or set to zero.
+- Do not allow editing of the mediator field for intercepts, as the provisioner does not support this anyway.
+
 * Tue May 14 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.5-1
 - Fix bug where editing intercepts would result in the agency being reset
   to the "default" agency.
