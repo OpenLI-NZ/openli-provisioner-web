@@ -58,7 +58,7 @@ function dataTrimInner(apiField, data, key) {
             }
         }
     } else if (!(data[key] instanceof Array)) {
-        if (!data[key] && data[key] !== "") {
+        if (!data[key] && data[key] !== "" && data[key] !== 0) {
             delete data[key];
         } else if (data[key] === "" && apiField.dropblank) {
             delete data[key];

@@ -72,7 +72,17 @@ objects:
       user:
         required: true
         type: str
-        helptext: "The AAA username for the intercept target (e.g. their username in RADIUS)."
+        helptext: "The identity of the intercept target (e.g. their username in RADIUS, or their MSISDN for mobile users)."
+      mobileident:
+        type: select
+        minversion: 1.1.6
+        choices:
+          - "Undetermined"
+          - "MSISDN"
+          - "IMSI"
+          - "IMEI"
+        defaultval: "Undetermined"
+        helptext: "The type of identifier that has been specified in the 'user' field (applies to mobile intercepts only)."
       accesstype:
         type: select
         choices:
@@ -92,6 +102,7 @@ objects:
         helptext: "The type of Internet connection provided to the intercept target."
       vendmirrorid:
         type: int
+        dropblank: true
         helptext: "The intercept ID assigned to the packets emitted by a mirroring platform (such as JMirror or ALU mirroring) for the target user. Only set this option if you are using a vendor mirroring feature to redirect target traffic into OpenLI."
       radiusident:
         type: select
@@ -283,8 +294,8 @@ objects:
         helptext: "Key to use when encrypting CC and IRI contents. Recommended key length is 24 characters."
         type: str
 
-  radiusserver:
-    path: /radiusserver
+  radiusserver_legacy:
+    path: /radiusserver_legacy
     key: [ipaddress, port]
     methods:
       - GET
@@ -300,7 +311,52 @@ objects:
         required: true
         helptext: "The port that the RADIUS server is listening on (don't forget to add both the Accounting and Auth ports!)"
         type: port
+
+  radiusserver:
+    path: /radiusserver
+    key: [ipaddress, port_lower, port_upper]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+        helptext: "The IP address of the RADIUS server."
+      port_lower:
+        required: true
+        helptext: "The lowest port in the port range that the RADIUS server is listening on (don't forget to include both the Accounting and Auth ports in your range!)."
+        type: port
+      port_upper:
+        required: true
+        helptext: "The highest port in the port range that the RADIUS server is listening on (don't forget to include both the Accounting and Auth ports in your range!)."
+        type: port
+
   sipserver:
+    path: /sipserver
+    key: [ipaddress, port_lower, port_upper]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+        helptext: "The IP address of the SIP server."
+      port_lower:
+        required: true
+        helptext: "The lowest port in the port range that the SIP server is listening on."
+        type: port
+      port_upper:
+        required: true
+        helptext: "The highest port in the port range that the SIP server is listening on."
+        type: port
+
+  sipserver_legacy:
     path: /sipserver
     key: [ipaddress, port]
     methods:

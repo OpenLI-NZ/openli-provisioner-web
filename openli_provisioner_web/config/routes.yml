@@ -56,10 +56,12 @@ routes:
               label: Mediator ID
             - name: vendmirrorid
               label: Vendor mirror
-            - name: user
-              label: User
             - name: accesstype
               label: Access type
+            - name: user
+              label: User
+            - name: mobileident
+              label: Mobile User Identifier
             - name: radiusident
               label: RADIUS identity
             - name: staticips
@@ -155,13 +157,38 @@ routes:
   coreserver:
     title: Core servers
     navigation:
+      - link: radiusserver_legacy
+        maxversion: 1.1.5
       - link: radiusserver
+        minversion: 1.1.6
+      - link: sipserver_legacy
+        maxversion: 1.1.5
       - link: sipserver
+        minversion: 1.1.6
+
       - link: gtpserver
       - link: smtpserver
       - link: imapserver
       - link: pop3server
     routes:
+      radiusserver_legacy:
+        title: RADIUS servers
+        object:
+          name: radiusserver_legacy
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port
+              label: Port
+      sipserver_legacy:
+        title: SIP servers
+        object:
+          name: sipserver_legacy
+          fields:
+            - name: ipaddress
+              label: IP Address
+            - name: port
+              label: Port
       radiusserver:
         title: RADIUS servers
         object:
@@ -169,8 +196,10 @@ routes:
           fields:
             - name: ipaddress
               label: IP Address
-            - name: port
-              label: Port
+            - name: port_lower
+              label: Minimum Port Number
+            - name: port_upper
+              label: Maximum Port Number
       sipserver:
         title: SIP servers
         object:
@@ -178,8 +207,11 @@ routes:
           fields:
             - name: ipaddress
               label: IP Address
-            - name: port
-              label: Port
+            - name: port_lower
+              label: Minimum Port Number
+            - name: port_upper
+              label: Maximum Port Number
+
       gtpserver:
         title: GTP servers
         object:

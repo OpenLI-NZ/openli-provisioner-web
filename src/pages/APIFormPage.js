@@ -26,7 +26,8 @@ import {
     initialAPIValidationValue,
     fieldLabel,
     formatAPIData,
-    toAPIObject
+    toAPIObject,
+    isNavigationAPISupported
 } from "../utilities/api";
 import { useRequestJSON, useGetRequestJSON } from "../utilities/requests";
 import { getErrorMessage } from "../utilities/errors";
@@ -59,8 +60,8 @@ function APIFormPage({objectType, cancelCallback, config, object=null}) {
 
     const [, initialValidation] = useMemo(() => validateAPIData(
         objectType.api.fields,
-        object ? deepCopyJSON(initialObject) : {}
-    ), [object, objectType, initialObject]);
+        object ? deepCopyJSON(initialObject) : {}, config
+    ), [object, objectType, initialObject, config]);
     const [validation, setValidation] = useState(initialValidation);
 
     const [error, setError] = useState("");
@@ -92,11 +93,12 @@ function APIFormPage({objectType, cancelCallback, config, object=null}) {
     return(
         <Form onSubmit={ (event) => {
             setShowError(false);
-            handleSubmit(event, state);
+            handleSubmit(event, state, config);
         }}>
             <APIFormFields
                 fields={ {"route": objectType.route.fields, "api": objectType.api.fields} }
-                state={ state }/>
+                state={ state }
+                config={ config }/>
             <div className="btn-row">
                 <Button
                     type="button"
@@ -122,7 +124,7 @@ function APIFormPage({objectType, cancelCallback, config, object=null}) {
     );
 }
 
-function APIFormFields({fields, fieldKey=[], state}) {
+function APIFormFields({fields, fieldKey=[], state, config}) {
     return(
         <>
         { fields.route.map((f) => {
@@ -130,6 +132,8 @@ function APIFormFields({fields, fieldKey=[], state}) {
             const label = fieldLabel(field.route);
             const type = field.api.type || "str";
             const key = fieldKey.concat([field.route.name]);
+            const minversion = field.api.minversion;
+            const maxversion = field.api.maxversion;
             const infoicon =
                     ({ ref, ...triggerHandler }) => (
                         <span ref={ref} {...triggerHandler}>
@@ -152,6 +156,10 @@ function APIFormFields({fields, fieldKey=[], state}) {
                         (<OverlayTrigger placement="right" overlay={rendertip}>
                         {infoicon}
                         </OverlayTrigger>) : <></>;
+            if (isNavigationAPISupported(minversion, config.openliversion,
+                    maxversion) === false) {
+                return(<div></div>);
+            }
 
             if(type === "dict") {
                 return(
@@ -174,7 +182,8 @@ function APIFormFields({fields, fieldKey=[], state}) {
                         <APIFormList
                             field={ field }
                             fieldKey={ key }
-                            state={ state }/>
+                            state={ state }
+                            config={ config }/>
                     </div>
                 );
             } else if (type === "agencylist") {
@@ -226,14 +235,21 @@ function APIFormFields({fields, fieldKey=[], state}) {
 }
 
 function APIFormSelect({id, field, label, fieldKey, state}) {
-    const value = dataGet(state.data, fieldKey);
     const validation = dataGet(state.validation, fieldKey);
     const options = field.api.choices.map(
             opt => <option key={opt} value={opt}>{opt}</option>);
 
-    const disabled = (state.method === "PUT" &&
+    let value = dataGet(state.data, fieldKey);
+    let disabled = (state.method === "PUT" &&
         state.objectType.api.key.includes(fieldKey[0])) ||
         state.request.isLoading;
+
+    if (fieldKey.includes("mobileident")) {
+        if ("accesstype" in state.data && state.data["accesstype"] !== "mobile")
+        {
+            disabled = true;
+        }
+    }
 
     let element = (<Form.Select
         type={ "text" }
@@ -323,7 +339,8 @@ function APIFormInput({type, id, label, fieldKey, state}) {
     const validation = dataGet(state.validation, fieldKey);
     const disabled =
         (state.method === "PUT" &&
-        state.objectType.api.key.includes(fieldKey[0])) ||
+        (state.objectType.api.key.includes(fieldKey[0]) ||
+            fieldKey.includes("mediator"))) ||
         state.request.isLoading;
 
     let element = (<Form.Control
@@ -348,6 +365,7 @@ function APIFormInput({type, id, label, fieldKey, state}) {
         element = (<Form.Control
             { ...element.props }
             step="any"
+            value={ value }
             onWheel={ (event) => event.target.blur() }/>);
     }
 
@@ -366,14 +384,15 @@ function APIFormInput({type, id, label, fieldKey, state}) {
     )
 }
 
-function APIFormDict({field, fieldKey, state}) {
+function APIFormDict({field, fieldKey, state, config}) {
     return(<APIFormFields
         fields={ {"route": field.route.fields, "api": field.api.fields} }
         fieldKey={ fieldKey }
-        state={ state }/>);
+        state={ state }
+        config={ config }/>);
 }
 
-function APIFormList({field, fieldKey, state}) {
+function APIFormList({field, fieldKey, state, config}) {
     const value = dataGet(state.data, fieldKey);
     const validation = dataGet(state.validation, fieldKey);
     const type = field.api.elements.type || "str";
@@ -395,7 +414,8 @@ function APIFormList({field, fieldKey, state}) {
                             <APIFormDict
                                 field={ {"route": field.route.elements, "api": field.api.elements} }
                                 fieldKey={ key }
-                                state={ state }/>
+                                state={ state }
+                                config={ config }/>
                         </div>
                     );
                 } else if(type === "list") {
@@ -403,7 +423,8 @@ function APIFormList({field, fieldKey, state}) {
                         <APIFormList
                             field={ {"route": field.route.elements, "api": field.api.elements} }
                             fieldKey={ key }
-                            state={ state }/>
+                            state={ state }
+                            config={ config }/>
                     );
                 } else {
                     const id = "input_" + fieldKey.join("_");
@@ -478,11 +499,10 @@ function handleChange(event, fieldKey, state) {
     state.setData(state.data);
 }
 
-function handleSubmit(event, state) {
+function handleSubmit(event, state, config) {
     event.preventDefault();
-
     const [isValid, validation] = validateAPIData(state.objectType.api.fields,
-            state.data);
+            state.data, config);
 
     state.setValidation(validation);
 
