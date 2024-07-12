@@ -357,7 +357,8 @@ function sortAPIObjects(objectType, objects) {
      * port number (i.e. legacy mode), we can convert the port entry into
      * lower and upper fields that have the same value...
      */
-    const coreserverRoutes = ["sipserver"];  // TODO add other server types
+    // TODO add other server types
+    const coreserverRoutes = ["sipserver", "radiusserver"];
     let filtered = [];
     for (const obj of objects) {
         let ok = true;

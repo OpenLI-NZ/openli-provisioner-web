@@ -294,8 +294,8 @@ objects:
         helptext: "Key to use when encrypting CC and IRI contents. Recommended key length is 24 characters."
         type: str
 
-  radiusserver:
-    path: /radiusserver
+  radiusserver_legacy:
+    path: /radiusserver_legacy
     key: [ipaddress, port]
     methods:
       - GET
@@ -310,6 +310,28 @@ objects:
       port:
         required: true
         helptext: "The port that the RADIUS server is listening on (don't forget to add both the Accounting and Auth ports!)"
+        type: port
+
+  radiusserver:
+    path: /radiusserver
+    key: [ipaddress, port_lower, port_upper]
+    methods:
+      - GET
+      - POST
+      - DELETE
+    get_by_id: false
+    fields:
+      ipaddress:
+        required: true
+        type: ip
+        helptext: "The IP address of the RADIUS server."
+      port_lower:
+        required: true
+        helptext: "The lowest port in the port range that the RADIUS server is listening on (don't forget to include both the Accounting and Auth ports in your range!)."
+        type: port
+      port_upper:
+        required: true
+        helptext: "The highest port in the port range that the RADIUS server is listening on (don't forget to include both the Accounting and Auth ports in your range!)."
         type: port
 
   sipserver:
