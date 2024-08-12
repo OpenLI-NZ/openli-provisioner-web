@@ -25,6 +25,8 @@ routes:
           label: HI3 address
         - name: hi3port
           label: HI3 port
+        - name: agencycc
+          label: Agency Country Code
         - name: keepalivefreq
           label: Keep alive frequency (seconds)
         - name: keepalivewait

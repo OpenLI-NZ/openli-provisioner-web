@@ -29,6 +29,11 @@ objects:
         required: true
         type: port
         helptext: "The TCP port where the agency will be listening for your Handover Interface 3 (HI3) connection."
+      agencycc:
+        minversion: 1.1.8
+        required: false
+        type: str
+        helptext: "The 2 letter country code for the country where this agency is located."
       keepalivefreq:
         type: int
         default: 300
