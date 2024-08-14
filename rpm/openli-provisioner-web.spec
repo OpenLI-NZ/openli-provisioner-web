@@ -1,5 +1,5 @@
 Name:           openli-provisioner-web
-Version:        1.1.6
+Version:        1.1.7
 Release:        1%{?dist}
 Summary:        Web Interface for the OpenLI provisioner
 
@@ -58,6 +58,9 @@ fi
 %{_bindir}/openli-web-provisioner-npm.sh
 
 %changelog
+* Wed Aug 14 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.7-1
+- Add support for agency country code parameter when configuring agencies (requires openli-provisioner 1.1.8).
+
 * Fri Jul 12 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.6-1
 - Add support for specifying port ranges when configuring SIP and RADIUS servers (requires openli-provisioner 1.1.6).
 - Add support for the "mobileident" parameter for mobile IP intercepts (requires openli-provisioner 1.1.6).

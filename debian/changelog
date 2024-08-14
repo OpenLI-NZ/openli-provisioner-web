@@ -1,3 +1,10 @@
+openli-provisioner-web (1.1.7-1) unstable; urgency=medium
+
+  * Add support for setting the "agency country code" parameter
+    for Agencies (requires openli-provisioner 1.1.8).
+
+ -- Shane Alcock <salcock@searchlight.nz>  Wed, 14 Aug 2024 14:22:04 +1200
+
 openli-provisioner-web (1.1.6-1) unstable; urgency=medium
 
   * Add support for specifying port ranges when configuring SIP and
