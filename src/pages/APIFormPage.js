@@ -321,6 +321,7 @@ function APIFormAgencyList({id, field, label, fieldKey, state}) {
                 </option>
             );
         })}
+        <option key="pcapdisk" value="pcapdisk">Write as pcap files</option>
         </Form.Select>);
 
     return(
