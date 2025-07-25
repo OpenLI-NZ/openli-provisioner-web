@@ -156,6 +156,12 @@ routes:
               label: Encryption Method for CC and IRI content
             - name: encryptionkey
               label: Encryption Key
+            - name: xids
+              label: XIDs
+              elements:
+                fields:
+                  - name: xid
+                    label: XID
   coreserver:
     title: Core servers
     navigation:
