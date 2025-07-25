@@ -1,3 +1,31 @@
+openli-provisioner-web (1.1.7-1) unstable; urgency=medium
+
+  * Add support for setting the "agency country code" parameter
+    for Agencies (requires openli-provisioner 1.1.8).
+
+ -- Shane Alcock <salcock@searchlight.nz>  Wed, 14 Aug 2024 14:22:04 +1200
+
+openli-provisioner-web (1.1.6-1) unstable; urgency=medium
+
+  * Add support for specifying port ranges when configuring SIP and
+    RADIUS servers (requires openli-provisioner 1.1.6).
+  * Add support for the "mobileident" parameter for mobile IP
+    intercepts (requires openli-provisioner 1.1.6).
+  * Fix glitches when editing an intercept with a vendor mirror ID
+    that is either blank or set to zero.
+  * Do not allow editing of the mediator field for intercepts, as the
+    provisioner does not support this anyway.
+
+ -- Shane Alcock <salcock@searchlight.nz>  Fri, 12 Jul 2024 15:04:20 +1200
+
+openli-provisioner-web (1.1.5-1) unstable; urgency=medium
+
+  * Fix bug where the agency dropdown would always be initially
+    set to the "default" agency when editing an intercept, rather than
+    the actual agency that was configured for that intercept.
+
+ -- Shane Alcock <salcock@searchlight.nz>  Tue, 14 May 2024 14:31:19 +1200
+
 openli-provisioner-web (1.1.4-1) unstable; urgency=medium
 
   * Fix bug where a blank realm for a SIP target would not be treated as a

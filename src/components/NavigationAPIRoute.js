@@ -23,7 +23,8 @@ function NavigationAPIRoute({route, openliversion, path="", activePath="", depth
         { route.navigation.map((link, index) => {
             const linkPath = `${path}/${link.link}`;
             const linkRoute = route.routes[link.link];
-            if (! isNavigationAPISupported(link.minversion, openliversion)) {
+            if (! isNavigationAPISupported(link.minversion, openliversion,
+                    link.maxversion)) {
                 return (<> </>);
             }
 

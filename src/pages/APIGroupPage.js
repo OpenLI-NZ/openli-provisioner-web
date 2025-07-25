@@ -24,7 +24,7 @@ function APIGroupPage({title, route, config, path=""}) {
         <ul>
             { route.navigation.map((link) => {
                 if (isNavigationAPISupported(link.minversion,
-                        config.openliversion)) {
+                        config.openliversion, link.maxversion)) {
 
                     return(<li><Link to={ `${path}/${link.link}` }>{ route.routes[link.link].title }</Link></li>);
                 } else {

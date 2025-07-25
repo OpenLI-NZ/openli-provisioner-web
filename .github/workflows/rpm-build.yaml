@@ -19,11 +19,11 @@ jobs:
            - "rockylinux:8"
            - "rockylinux:9"
            - "fedora:39"
-           - "fedora:38"
+           - "fedora:40"
 
      steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install prereq packages
         run: ./rpmpkg-setup.sh ${{ matrix.target }}
       - name: Build packages
@@ -54,7 +54,7 @@ jobs:
            - "rockylinux:8"
            - "rockylinux:9"
            - "fedora:39"
-           - "fedora:38"
+           - "fedora:40"
      needs: build
      steps:
        - name: Set environment variables for download
@@ -85,7 +85,7 @@ jobs:
            - "rockylinux:8"
            - "rockylinux:9"
            - "fedora:39"
-           - "fedora:38"
+           - "fedora:40"
      needs: test
      steps:
        - name: Set environment variables for download
@@ -100,7 +100,7 @@ jobs:
            yum install -y findutils
            find . -name "*.rpm" | xargs cp -t packages/${DIRNAME}/
        - name: Publish package to cloudsmith
-         uses: wanduow/action-cloudsmith-upload-packages@v1
+         uses: salcock/action-cloudsmith-upload-packages@v1.8
          with:
            path: packages/
            repo: ${{ secrets.CLOUDSMITH_OWNER }}/openli
