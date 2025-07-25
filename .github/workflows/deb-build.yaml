@@ -16,11 +16,9 @@ jobs:
          arch:
            - amd64
          target:
-           - "debian:buster"
            - "debian:bullseye"
            - "debian:bookworm"
            - "ubuntu:noble"
-           - "ubuntu:focal"
            - "ubuntu:jammy"
 
      steps:
@@ -53,11 +51,9 @@ jobs:
          arch:
            - amd64
          target:
-           - "debian:buster"
            - "debian:bullseye"
            - "debian:bookworm"
            - "ubuntu:noble"
-           - "ubuntu:focal"
            - "ubuntu:jammy"
      needs: build
      steps:
@@ -89,11 +85,9 @@ jobs:
          arch:
            - amd64
          target:
-           - "debian:buster"
            - "debian:bullseye"
            - "debian:bookworm"
            - "ubuntu:noble"
-           - "ubuntu:focal"
            - "ubuntu:jammy"
      needs: test
      steps:

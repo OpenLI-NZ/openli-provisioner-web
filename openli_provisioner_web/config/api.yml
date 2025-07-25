@@ -261,7 +261,6 @@ objects:
         minimum: 0
         helptext: "The unique identifier of the mediator which will forward the intercept to the agency."
       siptargets:
-        required: true
         type: list
         elements:
           type: dict
@@ -298,6 +297,12 @@ objects:
       encryptionkey:
         helptext: "Key to use when encrypting CC and IRI contents. Recommended key length is 24 characters."
         type: str
+      xids:
+        minversion: 1.1.13
+        helptext: "When delivering traffic for this intercept over X2/X3, add the XIDs for the traffic streams here."
+        type: list
+        elements:
+          type: uuid
 
   radiusserver_legacy:
     path: /radiusserver_legacy
