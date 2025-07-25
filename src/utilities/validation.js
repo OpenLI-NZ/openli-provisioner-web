@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import isUUID from "validator/lib/isUUID";
+
 import {
     isArray,
     isBool,
@@ -37,6 +39,7 @@ const validationFunctionMap = {
     "email": validateEmail,
     "agencylist": validateAgency,
     "select": validateString,
+    "uuid": validateUUID,
 }
 
 const posIntRegex = /^[0-9]+$/;
@@ -105,6 +108,13 @@ function validateString(apiField, data) {
 function validateAgency(apiField, data) {
     if(!isString(data)) {
         return invalid("must be a valid agency identifier.");
+    }
+    return valid();
+}
+
+function validateUUID(apifield, data) {
+    if (!isUUID(data, 4)) {
+        return invalid("must be a valid version 4 UUID.");
     }
     return valid();
 }
