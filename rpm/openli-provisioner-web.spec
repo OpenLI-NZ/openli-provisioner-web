@@ -1,5 +1,5 @@
 Name:           openli-provisioner-web
-Version:        1.1.7
+Version:        1.1.8
 Release:        1%{?dist}
 Summary:        Web Interface for the OpenLI provisioner
 
@@ -58,6 +58,10 @@ fi
 %{_bindir}/openli-web-provisioner-npm.sh
 
 %changelog
+* Fri Jul 25 2025 Shane Alcock <salcock@searchlight.nz> - 1.1.8-1
+- Add support for pcapdisk agency when configuring intercepts
+- Add ability to configure XIDs for VOIP intercepts (requires openli-provisioner 1.1.13)
+
 * Wed Aug 14 2024 Shane Alcock <salcock@searchlight.nz> - 1.1.7-1
 - Add support for agency country code parameter when configuring agencies (requires openli-provisioner 1.1.8).
 

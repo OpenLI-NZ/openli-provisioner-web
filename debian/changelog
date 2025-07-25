@@ -1,3 +1,11 @@
+openli-provisioner-web (1.1.8-1) unstable; urgency=medium
+
+  * Allow 'pcapdisk' agency to be assigned to intercepts.
+  * Allow configuration of XIDs for VOIP intercepts (requires
+    openli-provisioner 1.1.13).
+
+ -- Shane Alcock <salcock@searchlight.nz>  Fri, 25 Jul 2025 17:48:59 +1200
+
 openli-provisioner-web (1.1.7-1) unstable; urgency=medium
 
   * Add support for setting the "agency country code" parameter
