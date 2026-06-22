@@ -1,3 +1,10 @@
+openli-provisioner-web (1.1.8-1) unstable; urgency=medium
+
+  * Bump package version number to match current git release tag to
+    simplify automated packaging.
+
+ -- Shane Alcock <salcock@searchlight.nz>  Mon, 22 Jul 2026 15:59:10 +1200
+
 openli-provisioner-web (1.1.6-1) unstable; urgency=medium
 
   * Add support for specifying port ranges when configuring SIP and
